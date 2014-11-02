@@ -50,7 +50,7 @@ cb1 = mpl.colorbar.ColorbarBase(ax1, cmap=cmap,
                                    orientation='horizontal')
 
 #-- Label on the axis
-cb1.set_label(u'Solar irradiation in kWh/m²')
+cb1.set_label(u'Yearly solar irradiation in kWh/m²')
 
 
 cmap = mpl.colors.ListedColormap(['r', 'g', 'b', 'c'])
@@ -67,5 +67,5 @@ cb1.ax.set_xticklabels(labels)
 
 #-- Output
 plt.savefig('colorbar.pdf', transparent=True)
-plt.savefig('colorbar.png', dpi=300, transparent=True)
+plt.savefig('colorbar.png', dpi=600, transparent=True)
 plt.show()

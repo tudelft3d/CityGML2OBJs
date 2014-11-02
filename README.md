@@ -41,13 +41,13 @@ CityGML requirements
 Mandatory:
 
 + CityGML 2.0
-+ Files must end with ".gml"
-+ Vertices in either <gml:posList> or <gml:pos>
++ Files must end with `.gml`
++ Vertices in either `<gml:posList>` or `<gml:pos>`
 
 Optional:
 
-+ <gml:id> for each <bldg:Building>
-+ <gml:id> for each <gml:Polygon>
++ `<gml:id>` for each `<bldg:Building>`
++ `<gml:id>` for each `<gml:Polygon>`
 
 
 Usage and options
@@ -61,7 +61,7 @@ To simply convert CityGML data into OBJ type the following command:
 python CityGML2OBJs.py -i /path/to/CityGML/files/ -o /path/to/new/OBJ/files/
 ```
 
-The tool will convert all *.gml it finds in that folder.
+The tool will convert all `*.gml` it finds in that folder.
 
 ### Semantics
 
@@ -143,8 +143,9 @@ Now the values of solar potential roofs in the CityGML file are stored as textur
 ![Solar3Dcity](http://www.gdmc.nl/biljecki/code/img/irrT-small.png)
 
 
+The different options are for transfering the values of attributes between different hierarchical levels. For instance, the option 3 takes the attribute assigned to the building, and colours only the triangles representing the RoofSurface, instead of all faces representing that building. If you want to discuss this in further details to accommodate your needs, do not hesitate to contact me.
 
-
+![Attributes](http://www.gdmc.nl/biljecki/code/img/att-uml.png)
 
 Known limitations, important notes, and plans for enhancements
 ---------------------
