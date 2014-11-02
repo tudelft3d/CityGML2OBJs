@@ -5,11 +5,11 @@ CityGML2OBJs
 
 A robust semantic-aware utility to convert CityGML data to OBJ, featuring some additional options reflected through the suffix "s" in the name of the package:
 
-- **s** as in objects -- separation and storage of buildings into multiple objects in OBJ.
-- **s**emantics -- decoupling of boundary surfaces in CityGML into separate OBJ**s**.
-- **s**ee attributes from the CityGML file -- the utility converts quantitative attributes into colours to support their visualisation.
-- **s**olution for finally making use of those CityGML files (sarcasm is also an **s** word).
-- **s**turdy -- checks polygons for validity, considers different forms of geometry storage in GML, detects for lack of boundary surfaces, etc.
+- s as in objects -- separation and storage of buildings into multiple objects in OBJ.
+- semantics -- decoupling of boundary surfaces in CityGML into separate OBJs.
+- see attributes from the CityGML file -- the utility converts quantitative attributes into colours to support their visualisation.
+- solution for finally making use of those CityGML files (sarcasm is also an S word).
+- sturdy -- checks polygons for validity, considers different forms of geometry storage in GML, detects for lack of boundary surfaces, etc.
 
 
 Features in more details
