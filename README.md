@@ -170,7 +170,7 @@ For the datasets I have, the performance is as follows:
   * plain options: 0.61 seconds per building
   * plain + semantics: 1.24 seconds per building
   
-LOD0 and LOD1 have roughly the same performance as LOD2.
+LOD0 and LOD1 have roughly the same performance as LOD2. Validation of polygons does not decrease the speed.
 
 Reports, research, and citations
 ---------------------
