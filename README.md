@@ -114,7 +114,7 @@ f 639 640 641
 
 ### Colourize attributes
 
-**Please note that this is an experimental feature adapted to my settings.**
+**Please note that this is an experimental feature adapted to specific settings.**
 
 I have CityGML files with the attribute value of the solar potential (derived with Solar3Dcity) for each polygon. Normally these values cannot be visualised and are lost in the conversion to other formats. This tool solves this problem by normalising the quantitative attributes and colourize them according to a colorbar, which is stored as a material (MTL) file.
 
@@ -188,7 +188,7 @@ Delft University of Technology
 
 fbiljecki@gmail.com
 
-[http://www.tudelft.nl/biljecki](http://www.tudelft.nl/biljecki)
+[http://www.gdmc.nl/biljecki](http://www.gdmc.nl/biljecki)
 
 
 
