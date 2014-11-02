@@ -8,7 +8,7 @@ A robust semantic-aware utility to convert CityGML data to OBJ, featuring some a
 - s as in objects -- separation and storage of buildings into multiple objects in OBJ.
 - semantics -- decoupling of boundary surfaces in CityGML into separate OBJs.
 - see attributes from the CityGML file -- the utility converts quantitative attributes into colours to support their visualisation.
-- solution for finally making use of those CityGML files (sarcasm is also an S word).
+- solution for finally making use of those CityGML files (sarcasm is also an S word :-)).
 - sturdy -- checks polygons for validity, considers different forms of geometry storage in GML, detects for lack of boundary surfaces, etc.
 
 
@@ -16,8 +16,8 @@ Features in more details
 ---------------------
 
 + It re-uses repeating vertices, resulting in a reduced file size and redundancy, for which CityGML is not particularly known for.
-+ Validates polygon and skips them if they are not valid, and supports multiple GML conventions for geometry (e.g. `<gml:posList>` vs `<gml:pos>`).
-+ The tool is capable of batch processing of multiple files saving you time.
++ Validates polygon and skips them if they are not valid. Further, the tool supports multiple GML conventions for geometry (e.g. `<gml:posList>` vs `<gml:pos>`).
++ The program is capable of batch processing of multiple files saving you time.
 + Supports polygon holes by triangulating all surfaces. Besides the holes, this is done by default because some software handles OBJs only if the faces are triangulated, especially when it comes to the texture, so not only holey polygons are triangulated. OBJ does not support polygons with holes, which are common in CityGML files (`<gml:interior>`), especially in LOD3 models due to doors, windows and holes left by building installations. For the Delaunay triangulation the tool uses Jonathan Richard Shewchuk's library, through its Python bindings Triangle.
 + It can store the semantic properties, and separate files for each of the thematic class, e.g. from the file `Delft.gml` it creates files `Delft-WallSurface.obj`, `Delft-RoofSurface.obj`, ...
 + OBJ does not really support the concept of attributes, hence if the CityGML file contains an attribute, this is generally lost in the conversion. However, this converter is capable of converting a quantitative attribute to OBJ as a texture (colour) of the feature. For instance, if the attribute about the yearly solar irradiation is available for each polygon in the CityGML file, it is converted to a graphical information and attached to each polygon as a surface, so now you can easily visualise your attributes in CityGML. Please note that this is a very custom setting, and you will need to adapt the code to match your needs.
