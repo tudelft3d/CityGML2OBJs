@@ -140,7 +140,7 @@ python CityGML2OBJs.py -i /path/to/CityGML/files/ -o /path/to/new/OBJ/files/ -s 
 
 Now the values of solar potential roofs in the CityGML file are stored as textures (colours), and such can be easily visualised:
 
-![Solar3Dcity](http://www.gdmc.nl/biljecki/code/img/irrT-small.png)
+![Values from Solar3Dcity](http://www.gdmc.nl/biljecki/code/img/irrT-small.png)
 
 
 The different options are for transfering the values of attributes between different hierarchical levels. For instance, the option 3 takes the attribute assigned to the building, and colours only the triangles representing the RoofSurface, instead of all faces representing that building. If you want to discuss this in further details to accommodate your needs, do not hesitate to contact me.
