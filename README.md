@@ -82,13 +82,33 @@ Regardless of the semantic option, the program always outputs the plain OBJ. Thi
 
 ### Objects
 
-CityGML is a structured format. If you call the flag `-o 1` you'll preserve the objects in the OBJ file
+CityGML is a structured format. If you call the flag `-g 1` you'll preserve the objects in the OBJ file
 
 ```
-python CityGML2OBJs.py -i /path/to/CityGML/files/ -o /path/to/new/OBJ/files/ -o 1
+python CityGML2OBJs.py -i /path/to/CityGML/files/ -o /path/to/new/OBJ/files/ -g 1
 ```
 
 For the object option the name of the object will be derived from the `<gml:id>`, if not, an ordered list will be made starting from 1, and each object will be named as an integer from 1 to *n*, where *n* is the number of objects.
+
+So this
+
+```
+<cityObjectMember>
+   <bldg:Building gml:id="ab76da5b-82d6-44ad-a670-c1f8b4f00edc">
+      <bldg:boundedBy>
+         <bldg:GroundSurface>
+   		    ...
+   ```
+
+becomes
+
+```
+o ab76da5b-82d6-44ad-a670-c1f8b4f00edc
+f 635 636 637 
+f 636 635 638 
+f 639 640 641
+...
+```
 
 
 
