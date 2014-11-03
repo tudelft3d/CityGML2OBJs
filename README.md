@@ -116,7 +116,7 @@ f 639 640 641
 
 **Please note that this is an experimental feature adapted to specific settings.**
 
-I have CityGML files with the attribute value of the solar potential (derived with Solar3Dcity) for each polygon. Normally these values cannot be visualised and are lost in the conversion to other formats. This tool solves this problem by normalising the quantitative attributes and colour them according to a colorbar, which is stored as a material (MTL) file.
+I have CityGML files with the attribute value of the solar potential (derived with Solar3Dcity, an experimental tool that I have recently developed and release soon) for each polygon. Normally these values cannot be visualised and are lost in the conversion to other formats. This tool solves this problem by normalising the quantitative attributes and colour them according to a colorbar, which is stored as a material (MTL) file.
 
 Ancillary tools have been developed to make this feature use-friendly and visually appealing. Open each of these ancillary python files and fiddle with the values.
 
