@@ -280,160 +280,163 @@ for f in glob.glob("*.gml"):
         for semanticSurface in semanticSurfaces:
             vertices[semanticSurface] = []
 
-
-
     #-- Find all instances of cityObjectMember and put them in a list
     for obj in root.getiterator('{%s}cityObjectMember'% ns_citygml):
         cityObjects.append(obj)
 
-    #-- Report the progress and contents of the CityGML file
     print FILENAME
-    print "\tThere are", len(cityObjects), "cityObject(s) in this CityGML file."
 
-    #-- Store each building separately
-    for cityObject in cityObjects:
-        for child in cityObject.getchildren():
-            if child.tag == '{%s}Building' %ns_bldg:
-                buildings.append(child)
+    if len(cityObjects) > 0:
 
-    print "\tAnalysing buildings and extracting the geometry..."
+        #-- Report the progress and contents of the CityGML file
+        print "\tThere are", len(cityObjects), "cityObject(s) in this CityGML file."
+        #-- Store each building separately
+        for cityObject in cityObjects:
+            for child in cityObject.getchildren():
+                if child.tag == '{%s}Building' %ns_bldg:
+                    buildings.append(child)
 
-    #-- Count the buildings
-    b_counter = 0
+        print "\tAnalysing buildings and extracting the geometry..."
 
-    #-- Do each building separately
-    for b in buildings:
+        #-- Count the buildings
+        b_counter = 0
 
-        #-- Increment the building counter
-        b_counter += 1
+        #-- Do each building separately
+        for b in buildings:
 
-        #-- If the object option is on, get the name for each building or create one
-        if OBJECTS:
-            ob = b.xpath("@g:id", namespaces={'g' : ns_gml})
-            if not ob:
-                ob = b_counter
-            else:
-                ob = ob[0]
-        
-        #-- Print progress for large files every 1000 buildings.
-        if b_counter > 0 and b_counter % 1000 == 0:
-            print str(b_counter) + "...",
+            #-- Increment the building counter
+            b_counter += 1
 
-        #-- Add the object identifier
-        if OBJECTS:
-            face_output['All'].append('o ' + str(ob) + '\n')
+            #-- If the object option is on, get the name for each building or create one
+            if OBJECTS:
+                ob = b.xpath("@g:id", namespaces={'g' : ns_gml})
+                if not ob:
+                    ob = b_counter
+                else:
+                    ob = ob[0]
+            
+            #-- Print progress for large files every 1000 buildings.
+            if b_counter > 0 and b_counter % 1000 == 0:
+                print str(b_counter) + "\t...",
 
-        #-- Add the attribute for the building
-        if ATTRIBUTE:
-            for ch in b.getchildren():
-                if ch.tag == "{%s}yearlyIrradiation" %ns_citygml:
-                    bAttVal = float(ch.text)
+            #-- Add the object identifier
+            if OBJECTS:
+                face_output['All'].append('o ' + str(ob) + '\n')
 
-        #-- OBJ with all surfaces in the same bin
-        polys = markup3dmodule.polygonFinder(b)
-        #-- Process each surface
-        for poly in polys:
+            #-- Add the attribute for the building
             if ATTRIBUTE:
-                poly_to_obj(poly, 'All', bAttVal)
-                if ATTRIBUTE == 3:
-                    atts.append(bAttVal)
-            else:
-                poly_to_obj(poly, 'All')
-                
-        #-- Semantic decomposition, with taking special care about the openings
-        if SEMANTICS:
-            #-- First take care about the openings since they can mix up
-            openings = []
-            openingpolygons = []
-            for child in b.getiterator():
-                    if child.tag == '{%s}opening' %ns_bldg:
-                        openings.append(child)
-                        for o in child.findall('.//{%s}Polygon' %ns_gml):
-                            openingpolygons.append(o)
+                for ch in b.getchildren():
+                    if ch.tag == "{%s}yearlyIrradiation" %ns_citygml:
+                        bAttVal = float(ch.text)
 
-            #-- Process each opening
-            for o in openings:
-                for child in o.getiterator():
-                    if child.tag == '{%s}Window' %ns_bldg or child.tag == '{%s}Door' %ns_bldg:
-                        if child.tag == '{%s}Window' %ns_bldg:
-                            t = 'Window'
-                        else:
-                            t = 'Door'
-                        polys = markup3dmodule.polygonFinder(o)
-                        for poly in polys:
-                            poly_to_obj(poly, t)
-
-            #-- Process other thematic boundaries
-            for cl in output:
-                cls = []
+            #-- OBJ with all surfaces in the same bin
+            polys = markup3dmodule.polygonFinder(b)
+            #-- Process each surface
+            for poly in polys:
+                if ATTRIBUTE:
+                    poly_to_obj(poly, 'All', bAttVal)
+                    if ATTRIBUTE == 3:
+                        atts.append(bAttVal)
+                else:
+                    poly_to_obj(poly, 'All')
+                    
+            #-- Semantic decomposition, with taking special care about the openings
+            if SEMANTICS:
+                #-- First take care about the openings since they can mix up
+                openings = []
+                openingpolygons = []
                 for child in b.getiterator():
-                    if child.tag == '{%s}%s' % (ns_bldg, cl):
-                        cls.append(child)
-                #-- Is this the first feature of this object?
-                firstF = True
-                for feature in cls:
-                    #-- If it is the first feature, print the object identifier
-                    if OBJECTS and firstF:
-                        face_output[cl].append('o ' + str(ob) + '\n')
-                        firstF = False
-                    #-- This is not supposed to happen, but just to be sure...
-                    if feature.tag == '{%s}Window' %ns_bldg or feature.tag == '{%s}Door' %ns_bldg:
-                        continue
-                    #-- Find all polygons in this semantic boundary hierarchy
-                    for p in feature.findall('.//{%s}Polygon' %ns_gml):
-                        if ATTRIBUTE == 1 or ATTRIBUTE == 2:
-                            #-- Flush the previous value
-                            attVal = None
-                            if cl == 'RoofSurface':
-                                #print p.xpath("//@c:irradiation", namespaces={'c' : ns_citygml})
-                                #-- Silly way but it works, as I can't get the above xpath to work for some reason
-                                for ch in p.getchildren():
-                                    if ATTRIBUTE == 1:
-                                        if ch.tag == "{%s}irradiation" %ns_citygml:
-                                            attVal = float(ch.text)
-                                            atts.append(attVal)
-                                    elif ATTRIBUTE == 2:
-                                        if ch.tag == "{%s}totalIrradiation" %ns_citygml:
-                                            attVal = float(ch.text)
-                                            atts.append(attVal)
-                        elif ATTRIBUTE == 3:
-                            attVal = None
-                            if cl == 'RoofSurface':
-                                attVal = bAttVal
-                        else:
-                            #-- If the attribute option is off, pass no material
-                        	attVal = None
-                        found_opening = False
-                        for optest in openingpolygons:
-                            if p == optest:
-                                found_opening = True
-                                break
-                        #-- If there is an opening skip it
-                        if found_opening:
-                            pass
-                        else:
-                            #-- Finally process the polygon
-                            poly_to_obj(p, cl, attVal)
+                        if child.tag == '{%s}opening' %ns_bldg:
+                            openings.append(child)
+                            for o in child.findall('.//{%s}Polygon' %ns_gml):
+                                openingpolygons.append(o)
 
-    print "\tExtraction done. Sorting geometry and writing file(s)."
+                #-- Process each opening
+                for o in openings:
+                    for child in o.getiterator():
+                        if child.tag == '{%s}Window' %ns_bldg or child.tag == '{%s}Door' %ns_bldg:
+                            if child.tag == '{%s}Window' %ns_bldg:
+                                t = 'Window'
+                            else:
+                                t = 'Door'
+                            polys = markup3dmodule.polygonFinder(o)
+                            for poly in polys:
+                                poly_to_obj(poly, t)
 
-    #-- Write the OBJ(s)
-    os.chdir(RESULT)
-    #-- Theme by theme
-    for cl in output:
-        write_vertices(vertices[cl], cl)
-        output[cl].append("\n" + ''.join(vertices_output[cl]))
-        output[cl].append("\n" + ''.join(face_output[cl]))
-        if cl == 'All':
-            adj_suffix = ""
-        else:
-            adj_suffix = "-" + str(cl)
-        if len(vertices[cl]) > 0:
-            with open(RESULT + FILENAME +  str(adj_suffix) + ".obj", "w") as obj_file:
-                obj_file.write(''.join(output[cl]))
+                #-- Process other thematic boundaries
+                for cl in output:
+                    cls = []
+                    for child in b.getiterator():
+                        if child.tag == '{%s}%s' % (ns_bldg, cl):
+                            cls.append(child)
+                    #-- Is this the first feature of this object?
+                    firstF = True
+                    for feature in cls:
+                        #-- If it is the first feature, print the object identifier
+                        if OBJECTS and firstF:
+                            face_output[cl].append('o ' + str(ob) + '\n')
+                            firstF = False
+                        #-- This is not supposed to happen, but just to be sure...
+                        if feature.tag == '{%s}Window' %ns_bldg or feature.tag == '{%s}Door' %ns_bldg:
+                            continue
+                        #-- Find all polygons in this semantic boundary hierarchy
+                        for p in feature.findall('.//{%s}Polygon' %ns_gml):
+                            if ATTRIBUTE == 1 or ATTRIBUTE == 2:
+                                #-- Flush the previous value
+                                attVal = None
+                                if cl == 'RoofSurface':
+                                    #print p.xpath("//@c:irradiation", namespaces={'c' : ns_citygml})
+                                    #-- Silly way but it works, as I can't get the above xpath to work for some reason
+                                    for ch in p.getchildren():
+                                        if ATTRIBUTE == 1:
+                                            if ch.tag == "{%s}irradiation" %ns_citygml:
+                                                attVal = float(ch.text)
+                                                atts.append(attVal)
+                                        elif ATTRIBUTE == 2:
+                                            if ch.tag == "{%s}totalIrradiation" %ns_citygml:
+                                                attVal = float(ch.text)
+                                                atts.append(attVal)
+                            elif ATTRIBUTE == 3:
+                                attVal = None
+                                if cl == 'RoofSurface':
+                                    attVal = bAttVal
+                            else:
+                                #-- If the attribute option is off, pass no material
+                            	attVal = None
+                            found_opening = False
+                            for optest in openingpolygons:
+                                if p == optest:
+                                    found_opening = True
+                                    break
+                            #-- If there is an opening skip it
+                            if found_opening:
+                                pass
+                            else:
+                                #-- Finally process the polygon
+                                poly_to_obj(p, cl, attVal)
 
-    print "\tFile(s) written. Conversion successful."
+        print "\tExtraction done. Sorting geometry and writing file(s)."
 
-    #-- Print the range of attributes. Useful for defining the range of the colorbar.
-    if ATTRIBUTE:
-        print '\tRange of attributes:', min(atts), '--', max(atts)
+        #-- Write the OBJ(s)
+        os.chdir(RESULT)
+        #-- Theme by theme
+        for cl in output:
+            write_vertices(vertices[cl], cl)
+            output[cl].append("\n" + ''.join(vertices_output[cl]))
+            output[cl].append("\n" + ''.join(face_output[cl]))
+            if cl == 'All':
+                adj_suffix = ""
+            else:
+                adj_suffix = "-" + str(cl)
+            if len(vertices[cl]) > 0:
+                with open(RESULT + FILENAME +  str(adj_suffix) + ".obj", "w") as obj_file:
+                    obj_file.write(''.join(output[cl]))
+
+        print "\tFile(s) written. Conversion successful."
+
+        #-- Print the range of attributes. Useful for defining the range of the colorbar.
+        if ATTRIBUTE:
+            print '\tRange of attributes:', min(atts), '--', max(atts)
+
+    else:
+        print "\tThere is a problem with this file: no cityObjects have been found. Please check if the file complies to CityGML 2.0 (version 1.0 is not supported)."
