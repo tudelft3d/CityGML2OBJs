@@ -84,6 +84,12 @@ def isPolyValid(polypoints, output=True):
         if output:
             print "A degenerate polygon. The points are not planar."
         valid = False
+    #-- Check if some of the points are repeating
+    for i in range (1, npolypoints):
+        if polypoints[i] == polypoints[i-1]:
+            if output:
+                print "A degenerate polygon. There are identical points."
+            valid = False
     #-- Check if the polygon does not have self-intersections
     #-- Disabled, something doesn't work here, will work on this later.
     #if not isPolySimple(polypoints):

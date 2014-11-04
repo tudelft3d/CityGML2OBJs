@@ -132,7 +132,14 @@ def poly_to_obj(poly, cl, material=None):
                 face_output[cl].append(f + "\n")
         else:
             #-- Oops
-            print "\t\t!! Detected an invalid polygon. Skipping..."
+            # Get the gml:id of the Polygon if it exists
+            polyid = poly.xpath("@g:id", namespaces={'g' : ns_gml})
+            if polyid:
+                polyid = polyid[0]
+                print "\t\t!! Detected an invalid polygon (%s). Skipping..." %polyid
+            else:
+                print "\t\t!! Detected an invalid polygon. Skipping..."
+            
     else:
         #-- Do the same, but without the validation
         t = polygon3dmodule.triangulation(epoints, irings)

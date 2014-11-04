@@ -162,14 +162,14 @@ Performance
 
 The speed mainly depends on the invoked options and the level of detail of the data which dramatically increases the number of triangles in the OBJ, mostly due to the openings.
 
-For the datasets I have, the performance is as follows:
+For the datasets I have (~100 buildings), the performance is as follows:
 
 * LOD2 (average 13 triangles per building)
   * plain options: 0.004 seconds per building
   * plain + semantics: 0.013 seconds per building
 * LOD3 (average 331 triangles per building)
-  * plain options: 0.61 seconds per building
-  * plain + semantics: 1.24 seconds per building
+  * plain options: 0.048 seconds per building
+  * plain + semantics: 0.0933 seconds per building
   
 LOD0 and LOD1 have roughly the same performance as LOD2. Validation of polygons does not decrease the speed.
 
@@ -196,6 +196,10 @@ fbiljecki@gmail.com
 Acknowledgments
 ---------------------
 
-+ [Ken Arroyo Ohori](http://www.gdmc.nl/Ken/), for the advices and pointing out special cases.
++ [Ken Arroyo Ohori](http://www.gdmc.nl/Ken/)
 
 + Ravi Peters who developed a similar software [citygml2obj](https://code.google.com/p/citygml2obj/) in 2009, and gave me the permission to use the name of his software.
+
++ [Hugo Ledoux](http://homepage.tudelft.nl/23t4p/)
+
++ [Martijn Meijers](http://www.gdmc.nl/martijn/)
