@@ -28,19 +28,20 @@ System requirements
 
 Python packages:
 
-+ Numpy
-+ Triangle
++ [Numpy](http://docs.scipy.org/doc/numpy/user/install.html) (likely already on your system)
++ [Triangle](http://dzhelil.info/triangle/). If not on your system: `easy_install triangle`
+  
 
 Optional:
 
-+ Matplotlib
++ [Matplotlib](http://matplotlib.org/users/installing.html)
 
 CityGML requirements
 ---------------------
 
 Mandatory:
 
-+ CityGML 2.0
++ CityGML 2.0 (1.0 doesn't work)
 + Files must end with `.gml`
 + Vertices in either `<gml:posList>` or `<gml:pos>`
 
