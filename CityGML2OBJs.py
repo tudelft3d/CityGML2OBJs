@@ -75,13 +75,16 @@ header = """# Converted from CityGML to OBJ with CityGML2OBJs.
 
 """
 
-def get_index(point, list_vertices):
+def get_index(point, list_vertices, shift=0):
+    """Index the vertices.
+    The third option is for incorporating a local index (building-level) to the global one (dataset-level)."""
+    global vertices
     """Unique identifier and indexer of vertices."""
     if point in list_vertices:
-        return list_vertices.index(point) + 1, list_vertices
+        return list_vertices.index(point) + 1 + shift, list_vertices
     else:
         list_vertices.append(point)
-        return list_vertices.index(point) + 1, list_vertices
+        return list_vertices.index(point) + 1 + shift, list_vertices
 
 def write_vertices(list_vertices, cla):
     """Write the vertices in the OBJ format."""
@@ -92,6 +95,7 @@ def write_vertices(list_vertices, cla):
 def poly_to_obj(poly, cl, material=None):
     """Main conversion function of one polygon to one or more faces in OBJ,
     in a specific semantic class. Supports assigning a material."""
+    global local_vertices
     global vertices
     global face_output
     #-- Decompose the polygon into exterior and interior
@@ -119,7 +123,7 @@ def poly_to_obj(poly, cl, material=None):
                 f = "f "
                 #-- For each point in the triangle (face) get the index "v" or add it to the index
                 for ep in range(0, len(tri)):
-                    v, vertices[cl] = get_index(tri[ep], vertices[cl])
+                    v, local_vertices[cl] = get_index(tri[ep], local_vertices[cl], len(vertices[cl]))
                     f += str(v) + " "
                 #-- Add the material
                 if material:
@@ -135,7 +139,7 @@ def poly_to_obj(poly, cl, material=None):
         for tri in t:
             f = "f "
             for ep in range(0, len(tri)):
-                v, vertices[cl] = get_index(tri[ep], vertices[cl])
+                v, local_vertices[cl] = get_index(tri[ep], local_vertices[cl], len(vertices[cl]))
                 f += str(v) + " "   
             if material:
                 face_output[cl].append("usemtl " + str(mtl(material, min_value, max_value, res)) + str("\n"))
@@ -304,6 +308,14 @@ for f in glob.glob("*.gml"):
         #-- Do each building separately
         for b in buildings:
 
+            #-- Build the local list of vertices to speed up the indexing
+            local_vertices = {}
+            local_vertices['All'] = []
+            if SEMANTICS:
+                for semanticSurface in semanticSurfaces:
+                    local_vertices[semanticSurface] = []
+
+
             #-- Increment the building counter
             b_counter += 1
 
@@ -414,6 +426,11 @@ for f in glob.glob("*.gml"):
                             else:
                                 #-- Finally process the polygon
                                 poly_to_obj(p, cl, attVal)
+
+            #-- Merge the local list of vertices to the global
+            for cl in local_vertices:
+                for vertex in local_vertices[cl]:
+                    vertices[cl].append(vertex)
 
         print "\tExtraction done. Sorting geometry and writing file(s)."
 
