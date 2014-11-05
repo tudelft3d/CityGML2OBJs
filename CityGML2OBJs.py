@@ -311,6 +311,7 @@ for f in glob.glob("*.gml"):
 
         #-- Count the buildings
         b_counter = 0
+        b_total = len(buildings)
 
         #-- Do each building separately
         for b in buildings:
@@ -335,8 +336,12 @@ for f in glob.glob("*.gml"):
                     ob = ob[0]
             
             #-- Print progress for large files every 1000 buildings.
-            if b_counter > 0 and b_counter % 1000 == 0:
-                print str(b_counter) + "\t...",
+            if b_counter == 1000:
+            	print "\t1000... ",
+            elif b_counter % 1000 == 0 and b_counter == (b_total - b_total % 1000):
+            	print str(b_counter) + "..."
+            elif b_counter > 0 and b_counter % 1000 == 0:
+                print str(b_counter) + "... ",
 
             #-- Add the object identifier
             if OBJECTS:
