@@ -1,7 +1,7 @@
 CityGML2OBJs
 ===========
 
-![CityGML2OBJs-header-image](http://www.gdmc.nl/biljecki/code/img/citygml2objs-small.png)
+![CityGML2OBJs-header-image](http://3dgeoinfo.bk.tudelft.nl/biljecki/code/img/citygml2objs-small.png)
 
 A robust semantic-aware utility to convert CityGML data to OBJ, featuring some additional options reflected through the suffix "s" in the name of the package:
 
@@ -76,7 +76,7 @@ the tool will create an OBJ file for each of the boundary surfaces it encounters
 
 Here is an example of the OBJ file representing the `WallSurface`:
 
-![Triangulated WallSurface](http://www.gdmc.nl/biljecki/code/img/sem-tri-small.png)
+![Triangulated WallSurface](http://3dgeoinfo.bk.tudelft.nl/biljecki/code/img/sem-tri-small.png)
 
 Regardless of the semantic option, the program always outputs the plain OBJ. This is a useful approach if you load data which does not have boundary surfaces (e.g. only a bunch of solids) so you'll always get something back. The tool detects if there are no thematic boundaries, so doesn't write empty obj files, for instance, an empty `*-Window.obj` for an LOD2 model.
 
@@ -141,12 +141,12 @@ python CityGML2OBJs.py -i /path/to/CityGML/files/ -o /path/to/new/OBJ/files/ -s 
 
 Now the values of solar potential roofs in the CityGML file are stored as textures (colours), and such can be easily visualised:
 
-![Values from Solar3Dcity](http://www.gdmc.nl/biljecki/code/img/irrT.png)
+![Values from Solar3Dcity](http://3dgeoinfo.bk.tudelft.nl/biljecki/code/img/irrT-small.png)
 
 
 The different options are for transfering the values of attributes between different hierarchical levels. For instance, the option 3 takes the attribute assigned to the building, and colours only the triangles representing the RoofSurface, instead of all faces representing that building. If you want to discuss this in further details to accommodate your needs, do not hesitate to contact me.
 
-![Attributes](http://www.gdmc.nl/biljecki/code/img/att-uml.png)
+![Attributes](http://3dgeoinfo.bk.tudelft.nl/biljecki/code/img/att-uml.png)
 
 Known limitations, important notes, and plans for enhancements
 ---------------------
