@@ -53,6 +53,7 @@ ns_citygml="http://www.opengis.net/citygml/2.0"
 ns_gml = "http://www.opengis.net/gml"
 ns_bldg = "http://www.opengis.net/citygml/building/2.0"
 ns_tran = "http://www.opengis.net/citygml/transportation/2.0"
+ns_veg = "http://www.opengis.net/citygml/vegetation/2.0"
 ns_xsi="http://www.w3.org/2001/XMLSchema-instance"
 ns_xAL="urn:oasis:names:tc:ciq:xsdschema:xAL:2.0"
 ns_xlink="http://www.w3.org/1999/xlink"
@@ -63,6 +64,7 @@ nsmap = {
     'gml': ns_gml,
     'bldg': ns_bldg,
     'tran': ns_tran,
+    'veg': ns_veg,
     'xsi' : ns_xsi,
     'xAL' : ns_xAL,
     'xlink' : ns_xlink,
@@ -311,7 +313,7 @@ for f in glob.glob("*.gml"):
                     buildings.append(child)
         for cityObject in cityObjects:
             for child in cityObject.getchildren():
-                if child.tag == '{%s}Road' %ns_tran:
+                if child.tag == '{%s}Road' %ns_tran or child.tag == '{%s}PlantCover' %ns_veg:
                     other.append(child)
 
         print "\tAnalysing buildings and extracting the geometry..."
