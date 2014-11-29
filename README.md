@@ -189,7 +189,7 @@ Delft University of Technology
 
 fbiljecki@gmail.com
 
-[http://www.gdmc.nl/biljecki](http://www.gdmc.nl/biljecki)
+[http://3dgeoinfo.bk.tudelft.nl/biljecki/](http://3dgeoinfo.bk.tudelft.nl/biljecki/)
 
 
 
