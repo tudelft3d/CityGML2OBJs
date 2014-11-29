@@ -139,7 +139,7 @@ Put the newly generated MTL in the directory with the CityGML data and run the u
 python CityGML2OBJs.py -i /path/to/CityGML/files/ -o /path/to/new/OBJ/files/ -s 1
 ```
 
-Now the values of solar potential roofs in the CityGML file are stored as textures (colours), and such can be easily visualised:
+Now the values of the solar potential of roof surfaces in the CityGML file are stored as textures (colours), and such can be easily visualised:
 
 ![Values from Solar3Dcity](http://3dgeoinfo.bk.tudelft.nl/biljecki/code/img/irrT-small.png)
 
