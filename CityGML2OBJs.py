@@ -371,6 +371,7 @@ for f in glob.glob("*.gml"):
                     if ATTRIBUTE == 3:
                         atts.append(bAttVal)
                 else:
+                    #print etree.tostring(poly)
                     poly_to_obj(poly, 'All')
                     
             #-- Semantic decomposition, with taking special care about the openings
