@@ -198,7 +198,7 @@ Acknowledgments
 
 + [Ken Arroyo Ohori](http://www.gdmc.nl/Ken/)
 
-+ Ravi Peters who developed a similar software [citygml2obj](https://code.google.com/p/citygml2obj/) in 2009, and gave me the permission to use the name of his software.
++ [Ravi Peters](http://3dgeoinfo.bk.tudelft.nl/rypeters) who developed a similar software [citygml2obj](https://code.google.com/p/citygml2obj/) in 2009, and gave me the permission to use the name of his software.
 
 + [Hugo Ledoux](http://homepage.tudelft.nl/23t4p/)
 
