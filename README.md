@@ -156,6 +156,14 @@ The different options are for transfering the values of attributes between diffe
 
 ![Attributes](http://3dgeoinfo.bk.tudelft.nl/biljecki/code/img/att-uml.png)
 
+Conditions for use, reports, research, and citation
+---------------------
+
+This software is free to use. However, you are kindly requested to acknowledge the use of this software by citing it in a research paper you are writing, reports, and/or other applicable materials. A research paper is under submission, hence please contact me to give you a reference to cite.
+
+Further, I will be very happy to hear if you find this tool useful for your workflow. If you find it useful and/or have suggestions for its improvement, please let me know.
+
+
 Known limitations, important notes, and plans for enhancements
 ---------------------
 
@@ -171,7 +179,7 @@ Performance
 
 The speed mainly depends on the invoked options and the level of detail of the data which dramatically increases the number of triangles in the OBJ, mostly due to the openings.
 
-For the datasets I have (~100 buildings), the performance is as follows:
+For the datasets I have tested the tool with (~100 buildings), the performance is as follows:
 
 * LOD2 (average 13 triangles per building)
   * plain options: 0.004 seconds per building
@@ -182,29 +190,32 @@ For the datasets I have (~100 buildings), the performance is as follows:
   
 LOD0 and LOD1 have roughly the same performance as LOD2. Validation of polygons does not decrease the speed.
 
-Reports, research, and citations
----------------------
-
-I will be very happy to hear if you find this tool useful for your workflow. If you use it and if you are writing a research publication, please contact me to give you a reference to cite (the paper under submission, so the record is dynamic).
-
 
 Contact me for questions and feedback
 ---------------------
 Filip Biljecki
 
+[3D Geoinformation Research Group](http://3dgeoinfo.bk.tudelft.nl/)
+
 Faculty of Architecture and the Built Environment
 
 Delft University of Technology
 
-fbiljecki@gmail.com
+fbiljecki at gmail dot com
 
-[http://3dgeoinfo.bk.tudelft.nl/biljecki/](http://3dgeoinfo.bk.tudelft.nl/biljecki/)
+[Personal webpage](http://3dgeoinfo.bk.tudelft.nl/biljecki/)
 
 
 
 Acknowledgments
 ---------------------
 
++ [Triangle](http://www.cs.cmu.edu/~quake/triangle.html), a 2D quality mesh generator and delaunay triangulator developed by [Jonathan Shewchuk](http://www.cs.berkeley.edu/~jrs/), and the [Python bindings](http://dzhelil.info/triangle/). CityGML2OBJs relies on this tool for triangulating the polygons, and its availability is highly appreaciated.
+
++ People who detected bugs and gave suggestions for improvements.
+
+My colleagues:
+ 
 + [Ken Arroyo Ohori](http://www.gdmc.nl/Ken/)
 
 + [Ravi Peters](http://3dgeoinfo.bk.tudelft.nl/rypeters) who developed a similar software [citygml2obj](https://code.google.com/p/citygml2obj/) in 2009, and gave me the permission to use the name of his software.
