@@ -295,6 +295,9 @@ for f in glob.glob("*.gml"):
     if SEMANTICS:
         for semanticSurface in semanticSurfaces:
             vertices[semanticSurface] = []
+    vertices['Other'] = []
+    face_output['Other'] = []
+    output['Other'] = []
 
     #-- Find all instances of cityObjectMember and put them in a list
     for obj in root.getiterator('{%s}cityObjectMember'% ns_citygml):
@@ -454,15 +457,19 @@ for f in glob.glob("*.gml"):
                 for vertex in local_vertices[cl]:
                     vertices[cl].append(vertex)
 
-        # local_vertices = {}
-        # local_vertices['Other'] = []
-        for oth in other:
-            polys = markup3dmodule.polygonFinder(oth)
-            #-- Process each surface
-            for poly in polys:
-                poly_to_obj(poly, 'All')
-        for vertex in local_vertices['All']:
-            vertices['All'].append(vertex)
+        if len(other) > 0:
+            vertices_output['Other'] = []
+            local_vertices = {}
+            local_vertices['Other'] = []
+            for oth in other:
+                # local_vertices = {}
+                # local_vertices['All'] = []
+                polys = markup3dmodule.polygonFinder(oth)
+                #-- Process each surface
+                for poly in polys:
+                    poly_to_obj(poly, 'Other')
+            for vertex in local_vertices['Other']:
+                vertices['Other'].append(vertex)
 
 
         print "\tExtraction done. Sorting geometry and writing file(s)."
@@ -471,14 +478,15 @@ for f in glob.glob("*.gml"):
         os.chdir(RESULT)
         #-- Theme by theme
         for cl in output:
-            write_vertices(vertices[cl], cl)
-            output[cl].append("\n" + ''.join(vertices_output[cl]))
-            output[cl].append("\n" + ''.join(face_output[cl]))
-            if cl == 'All':
-                adj_suffix = ""
-            else:
-                adj_suffix = "-" + str(cl)
             if len(vertices[cl]) > 0:
+                write_vertices(vertices[cl], cl)
+                output[cl].append("\n" + ''.join(vertices_output[cl]))
+                output[cl].append("\n" + ''.join(face_output[cl]))
+                if cl == 'All':
+                    adj_suffix = ""
+                else:
+                    adj_suffix = "-" + str(cl)
+                
                 with open(RESULT + FILENAME +  str(adj_suffix) + ".obj", "w") as obj_file:
                     obj_file.write(''.join(output[cl]))
 
