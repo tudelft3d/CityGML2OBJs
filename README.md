@@ -78,8 +78,16 @@ Here is an example of the OBJ file representing the `WallSurface`:
 
 ![Triangulated WallSurface](http://3dgeoinfo.bk.tudelft.nl/biljecki/code/img/sem-tri-small.png)
 
-Regardless of the semantic option, the program always outputs the plain OBJ. This is a useful approach if you load data which does not have boundary surfaces (e.g. only a bunch of solids) so you'll always get something back. The tool detects if there are no thematic boundaries, so doesn't write empty obj files, for instance, an empty `*-Window.obj` for an LOD2 model.
+Regardless of the semantic option, the program always outputs the plain OBJ. This is a useful approach if you load data which does not have boundary surfaces (e.g. only a bunch of solids) so you'll always get something back. The tool detects if there are no thematic boundaries, so doesn't write empty OBJ files, for instance, an empty `*-Window.obj` for an LOD2 model.
 
+### Validate geometries
+
+Call the `-v 1` option:
+
+```
+python CityGML2OBJs.py -i /path/to/CityGML/files/ -o /path/to/new/OBJ/files/ -v 1
+```
+in order to validate the geometries and skip invalid ones. The tool will report invalid geometries with their `<gml:id>`.
 
 ### Objects
 
@@ -151,8 +159,9 @@ The different options are for transfering the values of attributes between diffe
 Known limitations, important notes, and plans for enhancements
 ---------------------
 
-* Other thematic classes are not supported in the semantic sense. All CityGML files I have contain only buildings, so not much use of implementing other themes. However, all geometry should be able to be converted to the plain OBJ regardless of the theme.
+* Other thematic classes are not supported in the semantic sense, except roads and vegetation.  However, all geometry should be able to be converted to the plain OBJ regardless of the theme.
 * The tool supports only single-LOD files. If you load a multi-LOD file, you'll get their union.
+* If the converter crashes, it's probably because your CityGML files contain invalid geometries. Run the code with the `-v 1` flag to validate and skip the invalid geometries.
 * `XLink` is not supported, nor will be because for most files it will result in duplicate geometry. 
 * The tool does not support non-convex polygons in the interior, for which might happen that the centroid of a hole is outside the hole, messing up the triangulation. This is on my todo list, albeit I haven't encountered any such case, nor I can normally imagine surfaces in CityGML being non-convex.
 * CityGML can be a nasty format because there may be multiple ways to store the geometry. For instance, points can be stored under `<gml:pos>` and `<gml:posList>`. Check this interesting [blog post by Even Rouault](http://erouault.blogspot.nl/2014/04/gml-madness.html). I have tried to regard all cases, so it should work for your files, but if your file cannot be parsed, let me know.
