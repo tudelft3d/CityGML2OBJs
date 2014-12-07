@@ -209,6 +209,7 @@ fbiljecki at gmail dot com
 
 Acknowledgments
 ---------------------
++ This research is supported by the Dutch Technology Foundation STW, which is part of the Netherlands Organisation for Scientific Research (NWO), and which is partly funded by the Ministry of Economic Affairs. (Project code: 11300)
 
 + [Triangle](http://www.cs.cmu.edu/~quake/triangle.html), a 2D quality mesh generator and delaunay triangulator developed by [Jonathan Shewchuk](http://www.cs.berkeley.edu/~jrs/), and the [Python bindings](http://dzhelil.info/triangle/). CityGML2OBJs relies on this tool for triangulating the polygons, and its availability is highly appreaciated.
 
