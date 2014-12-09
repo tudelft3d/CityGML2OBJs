@@ -161,13 +161,13 @@ Conditions for use, reports, research, and citation
 
 This software is free to use. However, you are kindly requested to acknowledge the use of this software by citing it in a research paper you are writing, reports, and/or other applicable materials. A research paper is under submission, hence please contact me to give you a reference to cite.
 
-Further, I will be very happy to hear if you find this tool useful for your workflow. If you find it useful and/or have suggestions for its improvement, please let me know.
+Further, I will be very happy to hear if you find this tool useful for your workflow. If you find it helpful and/or have suggestions for its improvement, please let me know.
 
 
 Known limitations, important notes, and plans for enhancements
 ---------------------
 
-* Other thematic classes are not supported in the semantic sense, except roads and vegetation.  However, all geometry should be able to be converted to the plain OBJ regardless of the theme.
+* Other thematic classes are not supported in the semantic sense, except roads and vegetation.  However, all geometry will be converted to the plain OBJ regardless of the theme.
 * The tool supports only single-LOD files. If you load a multi-LOD file, you'll get their union.
 * If the converter crashes, it's probably because your CityGML files contain invalid geometries. Run the code with the `-v 1` flag to validate and skip the invalid geometries.
 * `XLink` is not supported, nor will be because for most files it will result in duplicate geometry. 
@@ -179,7 +179,7 @@ Performance
 
 The speed mainly depends on the invoked options and the level of detail of the data which dramatically increases the number of triangles in the OBJ, mostly due to the openings.
 
-For the datasets I have tested the tool with (~100 buildings), the performance is as follows:
+For benchmarking, I have tested the tool with a CityGML dataset of 100 buildings, and the performance is as follows:
 
 * LOD2 (average 13 triangles per building)
   * plain options: 0.004 seconds per building
@@ -188,7 +188,7 @@ For the datasets I have tested the tool with (~100 buildings), the performance i
   * plain options: 0.048 seconds per building
   * plain + semantics: 0.0933 seconds per building
   
-LOD0 and LOD1 have roughly the same performance as LOD2. Validation of polygons does not decrease the speed.
+LOD0 and LOD1 have roughly the same performance as LOD2. Validation of polygons does not notably decrease the speed.
 
 
 Contact me for questions and feedback
