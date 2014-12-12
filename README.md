@@ -5,14 +5,14 @@ CityGML2OBJs
 
 A robust semantic-aware utility to convert CityGML data to OBJ, featuring some additional options reflected through the suffix "s" in the name of the package:
 
-- structured objects -- separation and storage of buildings into multiple objects in OBJ.
-- semantics -- decoupling of boundary surfaces in CityGML into separate OBJs.
-- see attributes from the CityGML file -- the utility converts quantitative attributes into colours to support their visualisation.
-- solution for finally making use of those CityGML files (sarcasm is also an S word :-)).
+- semantics -- decoupling of thematically structured surfaces in CityGML and converting them into separate OBJs (that's where the "OBJs" in the name come from).
+- structured objects -- separation and storage of buildings into multiple objects in OBJ by structuring faces that belong to a building into the same group.
+- "see" the attributes from a CityGML file -- the utility converts quantitative attributes into colours to support their visualisation.
 - sturdy -- checks polygons for validity, considers different forms of geometry storage in GML, detects for lack of boundary surfaces, etc.
+- solution to finally make use of those CityGML files (sarcasm is also an S word :-)). OBJ is probably the most supported 3D format, and converting your CityGML files to OBJ opens a door to a large number of software packages and uses.
 
 
-Features in more details
+Features explained in more details
 ---------------------
 
 + It re-uses repeating vertices, resulting in a reduced file size and redundancy, for which CityGML is not particularly known for.
@@ -201,7 +201,7 @@ Faculty of Architecture and the Built Environment
 
 Delft University of Technology
 
-fbiljecki at gmail dot com
+email: fbiljecki at gmail dot com
 
 [Personal webpage](http://3dgeoinfo.bk.tudelft.nl/biljecki/)
 
