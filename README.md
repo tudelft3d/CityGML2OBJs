@@ -1,7 +1,7 @@
 CityGML2OBJs
 ===========
 
-![CityGML2OBJs-header-image](http://3dgeoinfo.bk.tudelft.nl/biljecki/code/img/citygml2objs-small.png)
+![CityGML2OBJs-header-image](http://3dgeoinfo.bk.tudelft.nl/biljecki/code/img/citygml2objs-whitesky-small.png)
 
 A robust semantic-aware utility to convert CityGML data to OBJ, featuring some additional options reflected through the suffix "s" in the name of the package:
 
