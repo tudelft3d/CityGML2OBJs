@@ -30,11 +30,16 @@ Python packages:
 
 + [Numpy](http://docs.scipy.org/doc/numpy/user/install.html) (likely already on your system)
 + [Triangle](http://dzhelil.info/triangle/). If not on your system: `easy_install triangle`
++ [lxml](http://lxml.de)
   
 
 Optional:
 
 + [Matplotlib](http://matplotlib.org/users/installing.html)
+
+### OS and Python version
+  
+The software has been developed on Mac OSX in Python 2.7, and has not been tested with other configurations. Hence, it is possible that some of the functions will not work on Windows and on Python 3.
 
 CityGML requirements
 ---------------------
