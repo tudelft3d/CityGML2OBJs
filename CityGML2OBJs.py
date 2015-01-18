@@ -218,8 +218,8 @@ res = 101
 #-- Configuration
 #-- Color the surfaces based on the normalised kWh/m^2 value <irradiation>. The plain OBJ will be coloured for the total irradiation.
 if ATTRIBUTE == 1:
-    min_value = 0#234.591880403
-    max_value = 1300#1389.97943395
+    min_value = 350.0#234.591880403
+    max_value = 1300.0#1389.97943395
 elif ATTRIBUTE == 2:
     min_value = 157.0136575
     max_value = 83371.4359245
@@ -238,7 +238,7 @@ def mtl(att, min_value, max_value, res):
     for i in range(0, len(ar)):
         ar[i] = round(ar[i], 4)
     #-- Normalise the attribute
-    v = float(att) / (max_value-min_value)
+    v = float(att-min_value) / (max_value-min_value)
     #-- Get the material
     assigned_material = min(ar, key=lambda x:abs(x-v))
     return str(assigned_material)

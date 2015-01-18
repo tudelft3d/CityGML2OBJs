@@ -38,7 +38,7 @@ fig = plt.figure(figsize=(8,1))
 ax1 = fig.add_axes([0.05, 0.80, 0.9, 0.15])
 
 #-- Bounds
-vmin = 0
+vmin = 350
 vmax = 1300
 
 #-- Colormap
