@@ -39,7 +39,7 @@ ax1 = fig.add_axes([0.05, 0.80, 0.9, 0.15])
 
 #-- Bounds
 vmin = 0
-vmax = 1500
+vmax = 1300
 
 #-- Colormap
 cmap = mpl.cm.afmhot
@@ -50,7 +50,7 @@ cb1 = mpl.colorbar.ColorbarBase(ax1, cmap=cmap,
                                    orientation='horizontal')
 
 #-- Label on the axis
-cb1.set_label(u'Yearly solar irradiation in kWh/m²')
+cb1.set_label(u'Yearly solar irradiance in kWh/m²')
 
 
 cmap = mpl.colors.ListedColormap(['r', 'g', 'b', 'c'])

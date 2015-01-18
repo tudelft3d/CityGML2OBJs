@@ -219,7 +219,7 @@ res = 101
 #-- Color the surfaces based on the normalised kWh/m^2 value <irradiation>. The plain OBJ will be coloured for the total irradiation.
 if ATTRIBUTE == 1:
     min_value = 0#234.591880403
-    max_value = 1500#1389.97943395
+    max_value = 1300#1389.97943395
 elif ATTRIBUTE == 2:
     min_value = 157.0136575
     max_value = 83371.4359245
