@@ -32,6 +32,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 #-- Resource: http://matplotlib.org/examples/api/colorbar_only.html
+plt.rc('text', usetex=True)
 plt.rc('font', family='serif')
 #-- Make a figure and axes with dimensions as desired
 fig = plt.figure(figsize=(8,1))
@@ -50,7 +51,7 @@ cb1 = mpl.colorbar.ColorbarBase(ax1, cmap=cmap,
                                    orientation='horizontal')
 
 #-- Label on the axis
-cb1.set_label(u'Yearly solar irradiance in kWh/m²')
+cb1.set_label(r"Yearly solar irradiation [kWh/m$^{2}$/year]")
 
 
 cmap = mpl.colors.ListedColormap(['r', 'g', 'b', 'c'])
@@ -62,7 +63,12 @@ norm = mpl.colors.BoundaryNorm(bounds, cmap.N)
 
 #-- Change the last tick label
 labels = [item.get_text() for item in cb1.ax.get_xticklabels()]
-labels[-1] = '>='+str(vmax)
+li = 0
+for l in labels:
+	# labels[li] = r"$"+str(l)+"$"
+	labels[li] = r""+str(l)
+	li += 1
+labels[-1] = r"$\geq "+str(vmax) + "$"
 cb1.ax.set_xticklabels(labels)
 
 #-- Output
