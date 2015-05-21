@@ -45,6 +45,7 @@ import numpy as np
 # if no thematic boundaries are found, this option is ignored.
 # -g 0 (default) -- keeps all objects in the same bin.
 # -g 1 -- it creates one object for every building.
+# -t 1 -- translation (reduction) of coordinates so the smallest vertex (one with the minimum coordinates) is at (0, 0)
 # -a 1 or 2 or 3 -- this is a very custom setting for adding the texture based on attributes, here you can see the settings for my particular case of the solar radiation. By default it is off.
 
 #-- Name spaces
@@ -54,6 +55,7 @@ ns_gml = "http://www.opengis.net/gml"
 ns_bldg = "http://www.opengis.net/citygml/building/2.0"
 ns_tran = "http://www.opengis.net/citygml/transportation/2.0"
 ns_veg = "http://www.opengis.net/citygml/vegetation/2.0"
+ns_gen = "http://www.opengis.net/citygml/generics/2.0"
 ns_xsi="http://www.w3.org/2001/XMLSchema-instance"
 ns_xAL="urn:oasis:names:tc:ciq:xsdschema:xAL:2.0"
 ns_xlink="http://www.w3.org/1999/xlink"
@@ -65,6 +67,7 @@ nsmap = {
     'bldg': ns_bldg,
     'tran': ns_tran,
     'veg': ns_veg,
+    'gen' : ns_gen,
     'xsi' : ns_xsi,
     'xAL' : ns_xAL,
     'xlink' : ns_xlink,
@@ -146,7 +149,10 @@ def poly_to_obj(poly, cl, material=None):
             
     else:
         #-- Do the same, but without the validation
-        t = polygon3dmodule.triangulation(epoints, irings)
+        try:
+	        t = polygon3dmodule.triangulation(epoints, irings)
+        except:
+	    	t = []
         for tri in t:
             f = "f "
             for ep in range(0, len(tri)):
@@ -170,6 +176,8 @@ PARSER.add_argument('-a', '--attribute',
     help='Creates a texture regarding the value of an attribute of the surface. No material is default.', required=False)
 PARSER.add_argument('-v', '--validation',
     help='Validates polygons, and if they are not valid give a warning and skip them. No validation is default.', required=False)
+PARSER.add_argument('-t', '--translate',
+    help='Translates all vertices, so that the smallest vertex is at zero. No translation is default.', required=False)
 ARGS = vars(PARSER.parse_args())
 DIRECTORY = ARGS['directory']
 RESULT = ARGS['results']
@@ -209,6 +217,17 @@ elif VALIDATION == '0':
     VALIDATION = False
 else:
     VALIDATION = False
+
+TRANSLATE = ARGS['translate']
+if TRANSLATE == '1':
+    TRANSLATE = True
+elif TRANSLATE == '0':
+    TRANSLATE = False
+else:
+    TRANSLATE = False
+
+if TRANSLATE:
+	global smallest_point
 
 #-----------------------------------------------------------------
 #-- Attribute stuff
@@ -316,7 +335,7 @@ for f in glob.glob("*.gml"):
                     buildings.append(child)
         for cityObject in cityObjects:
             for child in cityObject.getchildren():
-                if child.tag == '{%s}Road' %ns_tran or child.tag == '{%s}PlantCover' %ns_veg:
+                if child.tag == '{%s}Road' %ns_tran or child.tag == '{%s}PlantCover' %ns_veg or child.tag == '{%s}GenericCityObject' %ns_gen:
                     other.append(child)
 
         print "\tAnalysing buildings and extracting the geometry..."
@@ -473,6 +492,27 @@ for f in glob.glob("*.gml"):
 
 
         print "\tExtraction done. Sorting geometry and writing file(s)."
+
+        #-- Translate the vertices
+        if TRANSLATE:
+        	print "\tTranslating the coordinates of vertices."
+        	list_of_all_vertices = []
+	        for cl in output:
+	            if len(vertices[cl]) > 0:
+	            	for vtx in vertices[cl]:
+	            		list_of_all_vertices.append(vtx)
+	        smallest_vtx = polygon3dmodule.smallestPoint(list_of_all_vertices)
+	        dx = smallest_vtx[0]
+	        dy = smallest_vtx[1]
+	        print dx, dy
+	        for cl in output:
+	            if len(vertices[cl]) > 0:
+	            	for idx, vtx in enumerate(vertices[cl]):
+	            		# print vertices[cl][idx]
+	            		vertices[cl][idx][0] = vtx[0] - dx
+	            		vertices[cl][idx][1] = vtx[1] - dy
+	            		# print "\t", vertices[cl][idx]
+	        print dx, dy
 
         #-- Write the OBJ(s)
         os.chdir(RESULT)
