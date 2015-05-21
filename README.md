@@ -49,11 +49,22 @@ Mandatory:
 + CityGML 2.0 (1.0 doesn't work)
 + Files must end with `.gml`
 + Vertices in either `<gml:posList>` or `<gml:pos>`
++ Your files must be valid (see the next section)
 
 Optional, but recommended:
 
 + `<gml:id>` for each `<bldg:Building>`
 + `<gml:id>` for each `<gml:Polygon>`
+
+
+About the validity of CityGML files
+---------------------
+
+There have been reports that the code crashes for some CityGML files. Unfortunately, in some cases the triangulation code halts with a peculiar error as it encounters a weird geometry, that cannot be skipped (excepted).
+
+If your files won't convert, there's a high chance that you have invalid CityGML files. Please ensure that they are valid.
+
+[Hugo Ledoux](http://3dgeoinfo.bk.tudelft.nl/hledoux/) built [val3dity](http://geovalidation.bk.tudelft.nl/val3dity/), a thorough GML validator which is available for free through a web interface. Use this tool to test your files.
 
 
 Usage and options
@@ -172,7 +183,8 @@ Further, I will be very happy to hear if you find this tool useful for your work
 Known limitations, important notes, and plans for enhancements
 ---------------------
 
-* Other thematic classes are not supported in the semantic sense, except roads and vegetation.  However, all geometry will be converted to the plain OBJ regardless of the theme.
+* Other thematic classes are not supported in the semantic sense, except roads, generics, and vegetation.  However, all geometry will be converted to the plain OBJ regardless of the theme.
+* The texture from the OBJ is not converted to CityGML.
 * The tool supports only single-LOD files. If you load a multi-LOD file, you'll get their union.
 * If the converter crashes, it's probably because your CityGML files contain invalid geometries. Run the code with the `-v 1` flag to validate and skip the invalid geometries.
 * `XLink` is not supported, nor will be because for most files it will result in duplicate geometry. 
