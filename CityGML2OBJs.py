@@ -105,6 +105,7 @@ def poly_to_obj(poly, cl, material=None):
 				t = [epoints[:-1]]
 			else:
 				#-- Triangulate polys
+				# t = polygon3dmodule.triangulation(epoints, irings)
 				try:
 					t = polygon3dmodule.triangulation(epoints, irings)
 				except:
@@ -589,7 +590,7 @@ for f in files_found:
 				with open(RESULT + FILENAME +  str(adj_suffix) + ".obj", "w") as obj_file:
 					obj_file.write(''.join(output[cl]))
 
-		print "\tFile(s) written. Conversion successful."
+		print "\tOBJ file(s) written."
 
 		#-- Print the range of attributes. Useful for defining the range of the colorbar.
 		if ATTRIBUTE:

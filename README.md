@@ -16,7 +16,7 @@ A robust semantic-aware utility to convert CityGML data to OBJ, featuring some a
 Things to know
 ---------------------
 
-This is an experimental research software prototype. That said, support is limited, and the software is not without bugs. For instance, there are reports of crashes with large data sets.
+This is an experimental research software prototype. That said, support is limited, and the software is not without bugs. For instance, there are reports of crashes with large data sets and/or with invalid geometries.
 
 
 Publication and conditions for use
@@ -51,8 +51,8 @@ Features explained in more details
 + Supports polygon holes by triangulating all surfaces. Besides the holes, this is done by default because some software handles OBJs only if the faces are triangulated, especially when it comes to the texture, so not only holey polygons are triangulated. OBJ does not support polygons with holes, which are common in CityGML files (`<gml:interior>`), especially in LOD3 models due to doors, windows and holes left by building installations. For the Delaunay triangulation the tool uses Jonathan Richard Shewchuk's library, through its Python bindings Triangle.
 + It can store the semantic properties, and separate files for each of the thematic class, e.g. from the file `Delft.gml` it creates files `Delft-WallSurface.obj`, `Delft-RoofSurface.obj`, ...
 + OBJ does not really support the concept of attributes, hence if the CityGML file contains an attribute, this is generally lost in the conversion. However, this converter is capable of converting a quantitative attribute to OBJ as a texture (colour) of the feature. For instance, if the attribute about the yearly solar irradiation is available for each polygon in the CityGML file, it is converted to a graphical information and attached to each polygon as a surface, so now you can easily visualise your attributes in CityGML. Please note that this is a very custom setting, and you will need to adapt the code to match your needs.
-+ Converts the coordinates to a local system
-+ Supports both CityGML 1.0 and CityGML 2.0
++ Converts the coordinates to a local system.
++ Supports both CityGML 1.0 and CityGML 2.0.
 
 
 System requirements
@@ -177,14 +177,15 @@ OBJ supports polygons, but most software packages prefer triangles. Hence the po
 Known limitations
 ---------------------
 
+* Some polygon normals sometimes get inverted. Usually a (wrong) normal is preserved from the data set, but in rare instances a bug may cause a correct normal to be inverted (and the other way around--in that case it's a feature!).
 * Non-building thematic classes are not supported in the semantic sense (they will be converted together as `Other` class). However, all geometry will be converted to the plain OBJ regardless of the theme, when the corresponding option is invoked).
 * The texture from the OBJ is not converted to CityGML (future work).
 * The tool supports only single-LOD files. If you load a multi-LOD file, you'll get their union.
-* If the converter crashes, it's probably because your CityGML files contain invalid geometries. Run the code with the `-v 1` flag to validate and skip the invalid geometries. If that doesn't work, please report the error.
+* If the converter crashes, it's probably because your CityGML files contain invalid geometries. Run the code with the `-v 1` flag to validate and skip the invalid geometries. If that doesn't work, try to invoke the option `-p 1`. If that fails too, please report the error.
 * `XLink` is not supported, nor will be because for most files it will result in duplicate geometry. 
 * The tool does not support non-convex polygons in the interior, for which might happen that the centroid of a hole is outside the hole, messing up the triangulation. This is on my todo list, albeit I haven't encountered many such cases.
 * CityGML can be a nasty format because there may be multiple ways to store the geometry. For instance, points can be stored under `<gml:pos>` and `<gml:posList>`. Check this interesting [blog post by Even Rouault](http://erouault.blogspot.nl/2014/04/gml-madness.html). I have tried to regard all cases, so it should work for your files, but if your file cannot be parsed, let me know.
-* Skipping triangulation does not work with polygons with holes
+* Skipping triangulation does not work with polygons with holes.
 
 
 ### Colour attributes

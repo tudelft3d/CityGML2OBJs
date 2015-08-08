@@ -101,7 +101,10 @@ def isPolyValid(polypoints, output=True):
 def isPolyPlanar(polypoints):
     """Checks if a polygon is planar."""
     #-- Normal of the polygon from the first three points
-    normal = unit_normal(polypoints[0], polypoints[1], polypoints[2])
+    try:
+        normal = unit_normal(polypoints[0], polypoints[1], polypoints[2])
+    except:
+        return False
     #-- Number of points
     npolypoints = len(polypoints)
     #-- Tolerance
@@ -173,6 +176,11 @@ def intersection(p, q, r, s):
         return True
 #------------------------------------------
 
+def collinear(p0, p1, p2):
+    #-- http://stackoverflow.com/a/9609069
+    x1, y1 = p1[0] - p0[0], p1[1] - p0[1]
+    x2, y2 = p2[0] - p0[0], p2[1] - p0[1]
+    return x1 * y2 - x2 * y1 < 1e-12
 
 #-- Area and other handy computations
 def det(a):
@@ -192,7 +200,7 @@ def unit_normal(a, b, c):
              [c[0],c[1],1]])
     magnitude = (x**2 + y**2 + z**2)**.5
     if magnitude == 0.0:
-        raise SyntaxWarning("The normal of the polygon has no magnitude. Check the polygon. The most common cause for this are two identical and sequential points.")
+        raise ValueError("The normal of the polygon has no magnitude. Check the polygon. The most common cause for this are two identical sequential points or collinear points.")
     return (x/magnitude, y/magnitude, z/magnitude)
 
 def dot(a, b):
@@ -330,7 +338,7 @@ def get_y(plane, x, z):
 
 def compare_normals(n1, n2):
     """Compares if two normals are equal or opposite. Takes into account a small tolerance to overcome floating point errors."""
-    tolerance = 0.0001
+    tolerance = 10e-2
     #-- Assume equal and prove otherwise
     equal = True
     #-- i
@@ -359,7 +367,6 @@ def triangulation(e, i):
     holes = []
     segments = []
     index_point = 0
-
     #-- Slope computation points
     a = [[], [], []]
     b = [[], [], []]
@@ -399,7 +406,7 @@ def triangulation(e, i):
     #-- for the correct orientation of the new triangulated faces
     #-- If the polygon is vertical
     normal = unit_normal(temppolypoints[0], temppolypoints[1], temppolypoints[2])
-    if math.fabs(normal[2]) < 10e-6:
+    if math.fabs(normal[2]) < 10e-2:
         vertical = True
     else:
         vertical = False
@@ -471,10 +478,13 @@ def triangulation(e, i):
                 vert_adj[1] = vert[v][1]
                 vert_adj[2] = get_height(pl, vert_adj[0], vert_adj[1])
             tri_points_tmp.append(vert_adj)
-        tri_normal = unit_normal(tri_points_tmp[0], tri_points_tmp[1], tri_points_tmp[2])
-        if compare_normals(normal, tri_normal):
-            tri_points.append(tri_points_tmp)
-        else:
-            tri_points_tmp = reverse_vertices(tri_points_tmp)
-            tri_points.append(tri_points_tmp)
+            try:
+                tri_normal = unit_normal(tri_points_tmp[0], tri_points_tmp[1], tri_points_tmp[2])
+            except:
+                continue
+            if compare_normals(normal, tri_normal):
+                tri_points.append(tri_points_tmp)
+            else:
+                tri_points_tmp = reverse_vertices(tri_points_tmp)
+                tri_points.append(tri_points_tmp)
     return tri_points
