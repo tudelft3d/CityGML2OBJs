@@ -12,6 +12,36 @@ A robust semantic-aware utility to convert CityGML data to OBJ, featuring some a
 - solution to finally make use of those CityGML files (sarcasm is also an S word :-)). OBJ is probably the most supported 3D format, and converting your CityGML files to OBJ opens a door to a large number of software packages and uses.
 
 
+
+Things to know
+---------------------
+
+This is an experimental research software prototype. That said, support is limited, and the software is not without bugs. For instance, there are reports of crashes with large data sets.
+
+
+Publication and conditions for use
+---------------------
+
+
+This software is free to use. You are kindly asked to acknowledge its use by citing it in a research paper you are writing, reports, and/or other applicable materials. If you used it for making a nice publication, please cite the following paper:
+
+Biljecki, F., & Arroyo Ohori, K. (2015). Automatic semantic-preserving conversion between OBJ and CityGML (pp. 1–6). Proceedings of UDMV 2015: Workshop on Urban Data Modelling and Visualisation, Delft, Netherlands.
+
+
+```bib
+@inproceedings{Biljecki:2015vk,
+author = {Biljecki, Filip and Arroyo Ohori, Ken},
+title = {{Automatic semantic-preserving conversion between OBJ and CityGML}},
+booktitle = {UDMV 2015: Proceedings of the Workshop on Urban Data Modelling and Visualisation},
+year = {2015},
+pages = {1--6},
+address = {Delft, Netherlands},
+month = nov
+}
+```
+
+
+
 Features explained in more details
 ---------------------
 
@@ -21,6 +51,8 @@ Features explained in more details
 + Supports polygon holes by triangulating all surfaces. Besides the holes, this is done by default because some software handles OBJs only if the faces are triangulated, especially when it comes to the texture, so not only holey polygons are triangulated. OBJ does not support polygons with holes, which are common in CityGML files (`<gml:interior>`), especially in LOD3 models due to doors, windows and holes left by building installations. For the Delaunay triangulation the tool uses Jonathan Richard Shewchuk's library, through its Python bindings Triangle.
 + It can store the semantic properties, and separate files for each of the thematic class, e.g. from the file `Delft.gml` it creates files `Delft-WallSurface.obj`, `Delft-RoofSurface.obj`, ...
 + OBJ does not really support the concept of attributes, hence if the CityGML file contains an attribute, this is generally lost in the conversion. However, this converter is capable of converting a quantitative attribute to OBJ as a texture (colour) of the feature. For instance, if the attribute about the yearly solar irradiation is available for each polygon in the CityGML file, it is converted to a graphical information and attached to each polygon as a surface, so now you can easily visualise your attributes in CityGML. Please note that this is a very custom setting, and you will need to adapt the code to match your needs.
++ Converts the coordinates to a local system
++ Supports both CityGML 1.0 and CityGML 2.0
 
 
 System requirements
@@ -46,25 +78,23 @@ CityGML requirements
 
 Mandatory:
 
-+ CityGML 2.0 (1.0 doesn't work)
-+ Files must end with `.gml`
++ CityGML 1.0 or 2.0
++ Files must end with `.gml`, `.GML`, `.xml`, or `.XML`
 + Vertices in either `<gml:posList>` or `<gml:pos>`
 + Your files must be valid (see the next section)
 
 Optional, but recommended:
 
-+ `<gml:id>` for each `<bldg:Building>`
++ `<gml:id>` for each `<bldg:Building>` and other types of city objects
 + `<gml:id>` for each `<gml:Polygon>`
 
 
 About the validity of CityGML files
 ---------------------
 
-There have been reports that the code crashes for some CityGML files. Unfortunately, in some cases the triangulation code halts with a peculiar error as it encounters a weird geometry, that cannot be skipped (excepted).
+There have been reports that the code crashes for some CityGML files. Unfortunately, in some cases the triangulation code halts with a peculiar error as it encounters a weird geometry, that cannot be skipped (excepted). If your files won't convert, there's a chance that you have invalid CityGML files (albeit a CityGML2OBJs bug is not excluded). Please ensure that your files are valid. Alternatively, you can invoke the option `-v 1` to skip such geometries--sometimes it works.
 
-If your files won't convert, there's a high chance that you have invalid CityGML files. Please ensure that they are valid.
-
-[Hugo Ledoux](http://3dgeoinfo.bk.tudelft.nl/hledoux/) built [val3dity](http://geovalidation.bk.tudelft.nl/val3dity/), a thorough GML validator which is available for free through a web interface. Use this tool to test your files.
+[Hugo Ledoux](https://3d.bk.tudelft.nl/hledoux/) built [val3dity](http://geovalidation.bk.tudelft.nl/val3dity/), a thorough GML validator which is available for free through a web interface. Use this tool to test your files.
 
 
 Usage and options
@@ -78,7 +108,7 @@ To simply convert CityGML data into OBJ type the following command:
 python CityGML2OBJs.py -i /path/to/CityGML/files/ -o /path/to/new/OBJ/files/
 ```
 
-The tool will convert all `*.gml` it finds in that folder.
+The tool will convert all CityGML files it finds in that folder. Don't forget to close the command with `/`
 
 ### Semantics
 
@@ -135,6 +165,26 @@ f 639 640 641
 ...
 ```
 
+### Conversion of coordinates
+
+Normally CityGML data sets are geo-referenced. This may be a problem for some software packages. Invoke `-t 1` to convert the data set to a local system. The origin of the local system correspond to the point with the smallest coordinates (usually the one closest to south-west).
+
+### Skip the triangulation
+
+OBJ supports polygons, but most software packages prefer triangles. Hence the polygons are triangulated by default (another reason is that OBJ doesn't support polys with holes). However, this may cause problems in some instances, or you might prefer to preserve polygons. If so, put `-p 1` to skip the triangulation. Sometimes it also helps to bypass invalid geometries in CityGML data sets.
+
+
+Known limitations
+---------------------
+
+* Non-building thematic classes are not supported in the semantic sense (they will be converted together as `Other` class). However, all geometry will be converted to the plain OBJ regardless of the theme, when the corresponding option is invoked).
+* The texture from the OBJ is not converted to CityGML (future work).
+* The tool supports only single-LOD files. If you load a multi-LOD file, you'll get their union.
+* If the converter crashes, it's probably because your CityGML files contain invalid geometries. Run the code with the `-v 1` flag to validate and skip the invalid geometries. If that doesn't work, please report the error.
+* `XLink` is not supported, nor will be because for most files it will result in duplicate geometry. 
+* The tool does not support non-convex polygons in the interior, for which might happen that the centroid of a hole is outside the hole, messing up the triangulation. This is on my todo list, albeit I haven't encountered many such cases.
+* CityGML can be a nasty format because there may be multiple ways to store the geometry. For instance, points can be stored under `<gml:pos>` and `<gml:posList>`. Check this interesting [blog post by Even Rouault](http://erouault.blogspot.nl/2014/04/gml-madness.html). I have tried to regard all cases, so it should work for your files, but if your file cannot be parsed, let me know.
+* Skipping triangulation does not work with polygons with holes
 
 
 ### Colour attributes
@@ -172,31 +222,13 @@ The different options are for transfering the values of attributes between diffe
 
 ![Attributes](http://3dgeoinfo.bk.tudelft.nl/biljecki/github/citygml2objs/att-uml.png)
 
-Conditions for use, reports, research, and citation
----------------------
-
-This software is free to use. However, you are kindly requested to acknowledge the use of this software by citing it in a research paper you are writing, reports, and/or other applicable materials. A research paper is under submission, hence please contact me to give you a reference to cite.
-
-Further, I will be very happy to hear if you find this tool useful for your workflow. If you find it helpful and/or have suggestions for its improvement, please let me know.
-
-
-Known limitations, important notes, and plans for enhancements
----------------------
-
-* Other thematic classes are not supported in the semantic sense, except roads, generics, and vegetation.  However, all geometry will be converted to the plain OBJ regardless of the theme.
-* The texture from the OBJ is not converted to CityGML.
-* The tool supports only single-LOD files. If you load a multi-LOD file, you'll get their union.
-* If the converter crashes, it's probably because your CityGML files contain invalid geometries. Run the code with the `-v 1` flag to validate and skip the invalid geometries.
-* `XLink` is not supported, nor will be because for most files it will result in duplicate geometry. 
-* The tool does not support non-convex polygons in the interior, for which might happen that the centroid of a hole is outside the hole, messing up the triangulation. This is on my todo list, albeit I haven't encountered any such case, nor I can normally imagine surfaces in CityGML being non-convex.
-* CityGML can be a nasty format because there may be multiple ways to store the geometry. For instance, points can be stored under `<gml:pos>` and `<gml:posList>`. Check this interesting [blog post by Even Rouault](http://erouault.blogspot.nl/2014/04/gml-madness.html). I have tried to regard all cases, so it should work for your files, but if your file cannot be parsed, let me know.
 
 Performance
 ---------------------
 
-The speed mainly depends on the invoked options and the level of detail of the data which dramatically increases the number of triangles in the OBJ, mostly due to the openings.
+The speed mainly depends on the invoked options and the level of detail of the data which substantially increases the number of triangles in the OBJ, mostly due to the openings.
 
-For benchmarking, I have tested the tool with a CityGML dataset of 100 buildings, and the performance is as follows:
+For benchmarking, I have tested the tool with a CityGML data set of 100 buildings, and the performance is as follows:
 
 * LOD2 (average 13 triangles per building)
   * plain options: 0.004 seconds per building
@@ -208,11 +240,11 @@ For benchmarking, I have tested the tool with a CityGML dataset of 100 buildings
 LOD0 and LOD1 have roughly the same performance as LOD2. Validation of polygons does not notably decrease the speed.
 
 
-Contact me for questions and feedback
+Contact for questions and feedback
 ---------------------
 Filip Biljecki
 
-[3D Geoinformation Research Group](http://3dgeoinfo.bk.tudelft.nl/)
+[3D Geoinformation Research Group](https://3d.bk.tudelft.nl/)
 
 Faculty of Architecture and the Built Environment
 
@@ -220,7 +252,7 @@ Delft University of Technology
 
 email: fbiljecki at gmail dot com
 
-[Personal webpage](http://3dgeoinfo.bk.tudelft.nl/biljecki/)
+[Personal webpage](https://3d.bk.tudelft.nl/biljecki/)
 
 
 

@@ -51,7 +51,7 @@ cb1 = mpl.colorbar.ColorbarBase(ax1, cmap=cmap,
                                    orientation='horizontal')
 
 #-- Label on the axis
-cb1.set_label(r"Yearly solar irradiation [kWh/m$^{2}$/year]")
+cb1.set_label(r"Annual solar irradiation [kWh/m$^{2}$/year]")
 
 
 cmap = mpl.colors.ListedColormap(['r', 'g', 'b', 'c'])
