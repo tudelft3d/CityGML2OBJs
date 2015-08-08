@@ -50,32 +50,6 @@ import numpy as np
 # -t 1 -- translation (reduction) of coordinates so the smallest vertex (one with the minimum coordinates) is at (0, 0)
 # -a 1 or 2 or 3 -- this is a very custom setting for adding the texture based on attributes, here you can see the settings for my particular case of the solar radiation. By default it is off.
 
-#-- Name spaces
-ns_citygml="http://www.opengis.net/citygml/2.0"
-
-ns_gml = "http://www.opengis.net/gml"
-ns_bldg = "http://www.opengis.net/citygml/building/2.0"
-ns_tran = "http://www.opengis.net/citygml/transportation/2.0"
-ns_veg = "http://www.opengis.net/citygml/vegetation/2.0"
-ns_gen = "http://www.opengis.net/citygml/generics/2.0"
-ns_xsi="http://www.w3.org/2001/XMLSchema-instance"
-ns_xAL="urn:oasis:names:tc:ciq:xsdschema:xAL:2.0"
-ns_xlink="http://www.w3.org/1999/xlink"
-ns_dem="http://www.opengis.net/citygml/relief/2.0"
-
-nsmap = {
-	None : ns_citygml,
-	'gml': ns_gml,
-	'bldg': ns_bldg,
-	'tran': ns_tran,
-	'veg': ns_veg,
-	'gen' : ns_gen,
-	'xsi' : ns_xsi,
-	'xAL' : ns_xAL,
-	'xlink' : ns_xlink,
-	'dem' : ns_dem
-}
-
 #-- Text to be printed at the beginning of each OBJ
 header = """# Converted from CityGML to OBJ with CityGML2OBJs.
 # Conversion tool developed by Filip Biljecki, TU Delft <fbiljecki@gmail.com>, see more at Github:
@@ -295,6 +269,45 @@ for f in glob.glob("*.gml"):
 	CITYGML = etree.parse(FULLPATH)
 	#-- Getting the root of the XML tree
 	root = CITYGML.getroot()
+	if root.tag == "{http://www.opengis.net/citygml/1.0}CityModel":
+		#-- Name spaces
+		ns_citygml="http://www.opengis.net/citygml/1.0"
+
+		ns_gml = "http://www.opengis.net/gml"
+		ns_bldg = "http://www.opengis.net/citygml/building/1.0"
+		ns_tran = "http://www.opengis.net/citygml/transportation/1.0"
+		ns_veg = "http://www.opengis.net/citygml/vegetation/1.0"
+		ns_gen = "http://www.opengis.net/citygml/generics/1.0"
+		ns_xsi="http://www.w3.org/2001/XMLSchema-instance"
+		ns_xAL="urn:oasis:names:tc:ciq:xsdschema:xAL:1.0"
+		ns_xlink="http://www.w3.org/1999/xlink"
+		ns_dem="http://www.opengis.net/citygml/relief/1.0"
+	else:
+		#-- Name spaces
+		ns_citygml="http://www.opengis.net/citygml/2.0"
+
+		ns_gml = "http://www.opengis.net/gml"
+		ns_bldg = "http://www.opengis.net/citygml/building/2.0"
+		ns_tran = "http://www.opengis.net/citygml/transportation/2.0"
+		ns_veg = "http://www.opengis.net/citygml/vegetation/2.0"
+		ns_gen = "http://www.opengis.net/citygml/generics/2.0"
+		ns_xsi="http://www.w3.org/2001/XMLSchema-instance"
+		ns_xAL="urn:oasis:names:tc:ciq:xsdschema:xAL:2.0"
+		ns_xlink="http://www.w3.org/1999/xlink"
+		ns_dem="http://www.opengis.net/citygml/relief/2.0"
+
+	nsmap = {
+		None : ns_citygml,
+		'gml': ns_gml,
+		'bldg': ns_bldg,
+		'tran': ns_tran,
+		'veg': ns_veg,
+		'gen' : ns_gen,
+		'xsi' : ns_xsi,
+		'xAL' : ns_xAL,
+		'xlink' : ns_xlink,
+		'dem' : ns_dem
+	}
 	#-- Empty lists for cityobjects and buildings
 	cityObjects = []
 	buildings = []
@@ -555,4 +568,4 @@ for f in glob.glob("*.gml"):
 			print '\tRange of attributes:', min(atts), '--', max(atts)
 
 	else:
-		print "\tThere is a problem with this file: no cityObjects have been found. Please check if the file complies to CityGML 2.0 (version 1.0 is not supported)."
+		print "\tThere is a problem with this file: no cityObjects have been found. Please check if the file complies to CityGML."
