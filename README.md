@@ -12,6 +12,37 @@ A robust semantic-aware utility to convert CityGML data to OBJ, featuring some a
 - solution to finally make use of those CityGML files (sarcasm is also an S word :-)). OBJ is probably the most supported 3D format, and converting your CityGML files to OBJ opens a door to a large number of software packages and uses.
 
 
+
+Things to know
+---------------------
+
+This is an experimental research software prototype. That said, support is limited, and there are bugs. For instance, there are reports of crashes with large data sets.
+
+
+
+Publication and conditions for use
+---------------------
+
+
+This software is free to use. However, you are kindly requested to acknowledge its use by citing it in a research paper you are writing, reports, and/or other applicable materials; and mentioning the [3D Geoinformation group at the Delft University of Technology](http://3d.bk.tudelft.nl/). If you used it for making a nice publication, please cite the following paper:
+
+Biljecki, F., & Arroyo Ohori, K. (2015). Automatic semantic-preserving conversion between OBJ and CityGML (pp. 1–6). Proceedings of UDMV 2015: Workshop on Urban Data Modelling and Visualisation, Delft, Netherlands.
+
+
+```bib
+@inproceedings{Biljecki:2015vk,
+author = {Biljecki, Filip and Arroyo Ohori, Ken},
+title = {{Automatic semantic-preserving conversion between OBJ and CityGML}},
+booktitle = {UDMV 2015: Proceedings of the Workshop on Urban Data Modelling and Visualisation},
+year = {2015},
+pages = {1--6},
+address = {Delft, Netherlands},
+month = nov
+}
+```
+
+
+
 Features explained in more details
 ---------------------
 
@@ -135,6 +166,14 @@ f 639 640 641
 ...
 ```
 
+### Convert coordinates 
+
+Normally CityGML data sets are geo-referenced. This may be a problem for some software packages. Invoke `-t 1` to convert the data set to a local system. The origin of the local system correspond to the point with the smallest coordinates (usually the one closest to south-west).
+
+### Skip the triangulation
+
+OBJ supports polygons, but most software packages prefer triangles. Hence the polygons are triangulated by default. However, this may cause problems in some instances, or you might prefer to preserve polygons. If so, put `-p 1` to skip the triangulation.
+
 
 
 ### Colour attributes
@@ -172,13 +211,6 @@ The different options are for transfering the values of attributes between diffe
 
 ![Attributes](http://3dgeoinfo.bk.tudelft.nl/biljecki/github/citygml2objs/att-uml.png)
 
-Conditions for use, reports, research, and citation
----------------------
-
-This software is free to use. However, you are kindly requested to acknowledge the use of this software by citing it in a research paper you are writing, reports, and/or other applicable materials. A research paper is under submission, hence please contact me to give you a reference to cite.
-
-Further, I will be very happy to hear if you find this tool useful for your workflow. If you find it helpful and/or have suggestions for its improvement, please let me know.
-
 
 Known limitations, important notes, and plans for enhancements
 ---------------------
@@ -190,6 +222,7 @@ Known limitations, important notes, and plans for enhancements
 * `XLink` is not supported, nor will be because for most files it will result in duplicate geometry. 
 * The tool does not support non-convex polygons in the interior, for which might happen that the centroid of a hole is outside the hole, messing up the triangulation. This is on my todo list, albeit I haven't encountered any such case, nor I can normally imagine surfaces in CityGML being non-convex.
 * CityGML can be a nasty format because there may be multiple ways to store the geometry. For instance, points can be stored under `<gml:pos>` and `<gml:posList>`. Check this interesting [blog post by Even Rouault](http://erouault.blogspot.nl/2014/04/gml-madness.html). I have tried to regard all cases, so it should work for your files, but if your file cannot be parsed, let me know.
+* Skipping triangulation does not work with polygons with holes
 
 Performance
 ---------------------
@@ -208,11 +241,11 @@ For benchmarking, I have tested the tool with a CityGML dataset of 100 buildings
 LOD0 and LOD1 have roughly the same performance as LOD2. Validation of polygons does not notably decrease the speed.
 
 
-Contact me for questions and feedback
+Contact for questions and feedback
 ---------------------
 Filip Biljecki
 
-[3D Geoinformation Research Group](http://3dgeoinfo.bk.tudelft.nl/)
+[3D Geoinformation Research Group](https://3d.bk.tudelft.nl/)
 
 Faculty of Architecture and the Built Environment
 
@@ -220,7 +253,7 @@ Delft University of Technology
 
 email: fbiljecki at gmail dot com
 
-[Personal webpage](http://3dgeoinfo.bk.tudelft.nl/biljecki/)
+[Personal webpage](https://3d.bk.tudelft.nl/biljecki/)
 
 
 
