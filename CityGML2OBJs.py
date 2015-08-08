@@ -105,7 +105,10 @@ def poly_to_obj(poly, cl, material=None):
 				t = [epoints[:-1]]
 			else:
 				#-- Triangulate polys
-				t = polygon3dmodule.triangulation(epoints, irings)
+				try:
+					t = polygon3dmodule.triangulation(epoints, irings)
+				except:
+					t = []
 			#-- Process the triangles/polygons
 			for tri in t:
 				#-- Face marker
@@ -261,7 +264,12 @@ print "CityGML2OBJ. Searching for CityGML files..."
 
 #-- Find all CityGML files in the directory
 os.chdir(DIRECTORY)
-for f in glob.glob("*.gml"):
+#-- Supported extensions
+types = ('*.gml', '*.GML', '*.xml', '*.XML')
+files_found = []
+for files in types:
+	files_found.extend(glob.glob(files))
+for f in files_found:
 	FILENAME = f[:f.rfind('.')]
 	FULLPATH = DIRECTORY + f
 
@@ -269,6 +277,8 @@ for f in glob.glob("*.gml"):
 	CITYGML = etree.parse(FULLPATH)
 	#-- Getting the root of the XML tree
 	root = CITYGML.getroot()
+	#-- Determine CityGML version
+	# If 1.0
 	if root.tag == "{http://www.opengis.net/citygml/1.0}CityModel":
 		#-- Name spaces
 		ns_citygml="http://www.opengis.net/citygml/1.0"
@@ -282,6 +292,12 @@ for f in glob.glob("*.gml"):
 		ns_xAL="urn:oasis:names:tc:ciq:xsdschema:xAL:1.0"
 		ns_xlink="http://www.w3.org/1999/xlink"
 		ns_dem="http://www.opengis.net/citygml/relief/1.0"
+		ns_frn="http://www.opengis.net/citygml/cityfurniture/1.0"
+		ns_tun="http://www.opengis.net/citygml/tunnel/1.0"
+		ns_wtr="http://www.opengis.net/citygml/waterbody/1.0"
+		ns_brid="http://www.opengis.net/citygml/bridge/1.0"
+		ns_app="http://www.opengis.net/citygml/appearance/1.0"
+	#-- Else probably means 2.0
 	else:
 		#-- Name spaces
 		ns_citygml="http://www.opengis.net/citygml/2.0"
@@ -295,6 +311,11 @@ for f in glob.glob("*.gml"):
 		ns_xAL="urn:oasis:names:tc:ciq:xsdschema:xAL:2.0"
 		ns_xlink="http://www.w3.org/1999/xlink"
 		ns_dem="http://www.opengis.net/citygml/relief/2.0"
+		ns_frn="http://www.opengis.net/citygml/cityfurniture/2.0"
+		ns_tun="http://www.opengis.net/citygml/tunnel/2.0"
+		ns_wtr="http://www.opengis.net/citygml/waterbody/2.0"
+		ns_brid="http://www.opengis.net/citygml/bridge/2.0"
+		ns_app="http://www.opengis.net/citygml/appearance/2.0"
 
 	nsmap = {
 		None : ns_citygml,
@@ -306,7 +327,11 @@ for f in glob.glob("*.gml"):
 		'xsi' : ns_xsi,
 		'xAL' : ns_xAL,
 		'xlink' : ns_xlink,
-		'dem' : ns_dem
+		'dem' : ns_dem,
+		'frn' : ns_frn,
+		'tun' : ns_tun,
+		'brid': ns_brid,
+		'app' : ns_app
 	}
 	#-- Empty lists for cityobjects and buildings
 	cityObjects = []
@@ -367,7 +392,10 @@ for f in glob.glob("*.gml"):
 					buildings.append(child)
 		for cityObject in cityObjects:
 			for child in cityObject.getchildren():
-				if child.tag == '{%s}Road' %ns_tran or child.tag == '{%s}PlantCover' %ns_veg or child.tag == '{%s}GenericCityObject' %ns_gen:
+				if child.tag == '{%s}Road' %ns_tran or child.tag == '{%s}PlantCover' %ns_veg or \
+				child.tag == '{%s}GenericCityObject' %ns_gen or child.tag == '{%s}CityFurniture' %ns_frn or \
+				child.tag == '{%s}Relief' %ns_dem or child.tag == '{%s}Tunnel' %ns_tun or \
+				child.tag == '{%s}WaterBody' %ns_wtr or child.tag == '{%s}Bridge' %ns_brid:
 					other.append(child)
 
 		print "\tAnalysing objects and extracting the geometry..."
