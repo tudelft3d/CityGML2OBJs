@@ -22,7 +22,6 @@ This is an experimental research software prototype. That said, support is limit
 Publication and conditions for use
 ---------------------
 
-
 This software is free to use. You are kindly asked to acknowledge its use by citing it in a research paper you are writing, reports, and/or other applicable materials. If you used it for making a nice publication, please cite the following paper:
 
 Biljecki, F., & Arroyo Ohori, K. (2015). Automatic semantic-preserving conversion between OBJ and CityGML (pp. 1–6). Proceedings of UDMV 2015: Workshop on Urban Data Modelling and Visualisation, Delft, Netherlands.
@@ -179,7 +178,7 @@ Known limitations
 
 * Some polygon normals sometimes get inverted. Usually a (wrong) normal is preserved from the data set, but in rare instances a bug may cause a correct normal to be inverted (and the other way around--in that case it's a feature!).
 * Non-building thematic classes are not supported in the semantic sense (they will be converted together as `Other` class). However, all geometry will be converted to the plain OBJ regardless of the theme, when the corresponding option is invoked).
-* The texture from the OBJ is not converted to CityGML (future work).
+* The texture from the CityGML is not converted to OBJ (future work).
 * The tool supports only single-LOD files. If you load a multi-LOD file, you'll get their union.
 * If the converter crashes, it's probably because your CityGML files contain invalid geometries. Run the code with the `-v 1` flag to validate and skip the invalid geometries. If that doesn't work, try to invoke the option `-p 1`. If that fails too, please report the error.
 * `XLink` is not supported, nor will be because for most files it will result in duplicate geometry. 
