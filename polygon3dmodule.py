@@ -34,6 +34,7 @@ from lxml import etree
 import copy
 import triangle
 import numpy as np
+import shapely
 
 def getAreaOfGML(poly, height=True):
     """Function which reads <gml:Polygon> and returns its area.
@@ -72,23 +73,23 @@ def isPolyValid(polypoints, output=True):
     #-- Check if last point equal
     if polypoints[0] != polypoints[-1]:
         if output:
-            print "A degenerate polygon. First and last points do not match."
+            print "\t\tA degenerate polygon. First and last points do not match."
         valid = False
     #-- Check if it has at least three points
     if npolypoints < 4: #-- Four because the first point is doubled as the last one in the ring
         if output:
-            print "A degenerate polygon. The number of points is smaller than 3."
+            print "\t\tA degenerate polygon. The number of points is smaller than 3."
         valid = False
     #-- Check if the points are planar
     if not isPolyPlanar(polypoints):
         if output:
-            print "A degenerate polygon. The points are not planar."
+            print "\t\tA degenerate polygon. The points are not planar."
         valid = False
     #-- Check if some of the points are repeating
     for i in range (1, npolypoints):
         if polypoints[i] == polypoints[i-1]:
             if output:
-                print "A degenerate polygon. There are identical points."
+                print "\t\tA degenerate polygon. There are identical points."
             valid = False
     #-- Check if the polygon does not have self-intersections
     #-- Disabled, something doesn't work here, will work on this later.
@@ -316,6 +317,13 @@ def centroid(list_of_points):
         sum_z += float(p[2])
     return [sum_x / n, sum_y / n, sum_z / n]
 
+
+def point_inside(list_of_points):
+    """Returns a point that is guaranteed to be inside the polygon, thanks to Shapely."""
+    polygon = shapely.Polygon(list_of_points)
+    return polygon.representative_point().coords
+
+
 def plane(a,b,c):
     """Returns the equation of a three-dimensional plane in space by entering the three coordinates of the plane."""
     p_a = (b[1]-a[1])*(c[2]-a[2])-(c[1]-a[1])*(b[2]-a[2])
@@ -391,7 +399,10 @@ def triangulation(e, i):
                 segments.append([index_point, index_point+1])
             index_point += 1
             vertices.append(hole[p])
-        holes.append(centroid(hole[:-1]))
+        #-- A more robust way to get the point inside the hole, should work for non-convex interior polygons
+        holes.append(point_inside(hole[:-1]))
+        #-- Alternative, use centroid
+        # holes.append(centroid(hole[:-1]))
 
     #-- Project to 2D since the triangulation cannot be done in 3D with the library that is used
     npolypoints = len(vertices)
@@ -454,6 +465,7 @@ def triangulation(e, i):
  
     #-- Prepare the polygon to be triangulated
     poly = {'vertices' : np.array(newpolypoints), 'segments' : np.array(segments), 'holes' : np.array(newholes)}
+    # print poly
     #-- Triangulate
     t = triangle.triangulate(poly, "pQjz")
     #-- Get the triangles and their vertices

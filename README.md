@@ -1,7 +1,7 @@
 CityGML2OBJs
 ===========
 
-![CityGML2OBJs-header-image](http://3dgeoinfo.bk.tudelft.nl/biljecki/github/citygml2objs/whitesky-small.png)
+![CityGML2OBJs-header-image](https://3d.bk.tudelft.nl/biljecki/github/citygml2objs/whitesky-small.png)
 
 A robust semantic-aware utility to convert CityGML data to OBJ, featuring some additional options reflected through the suffix "s" in the name of the package:
 
@@ -24,7 +24,7 @@ Publication and conditions for use
 
 This software is free to use. You are kindly asked to acknowledge its use by citing it in a research paper you are writing, reports, and/or other applicable materials. If you used it for making a nice publication, please cite the following paper:
 
-Biljecki, F., & Arroyo Ohori, K. (2015). Automatic semantic-preserving conversion between OBJ and CityGML (pp. 1–6). Proceedings of UDMV 2015: Workshop on Urban Data Modelling and Visualisation, Delft, Netherlands.
+[Biljecki, F., & Arroyo Ohori, K. (2015). Automatic semantic-preserving conversion between OBJ and CityGML (pp. 1–6). Proceedings of UDMV 2015: Workshop on Urban Data Modelling and Visualisation, Delft, Netherlands.](http://filipbiljecki.com/publications/Biljecki2015vk.pdf)
 
 
 ```bib
@@ -62,6 +62,7 @@ Python packages:
 + [Numpy](http://docs.scipy.org/doc/numpy/user/install.html) (likely already on your system)
 + [Triangle](http://dzhelil.info/triangle/). If not on your system: `easy_install triangle`
 + [lxml](http://lxml.de)
++ [Shapely](https://github.com/Toblerity/Shapely)
   
 
 Optional:
@@ -121,7 +122,7 @@ the tool will create an OBJ file for each of the boundary surfaces it encounters
 
 Here is an example of the OBJ file representing the `WallSurface`:
 
-![Triangulated WallSurface](http://3dgeoinfo.bk.tudelft.nl/biljecki/github/citygml2objs/sem-tri-small.png)
+![Triangulated WallSurface](https://3d.bk.tudelft.nl/biljecki/github/citygml2objs/sem-tri-small.png)
 
 Regardless of the semantic option, the program always outputs the plain OBJ. This is a useful approach if you load data which does not have boundary surfaces (e.g. only a bunch of solids) so you'll always get something back. The tool detects if there are no thematic boundaries, so doesn't write empty OBJ files, for instance, an empty `*-Window.obj` for an LOD2 model.
 
@@ -215,12 +216,12 @@ python CityGML2OBJs.py -i /path/to/CityGML/files/ -o /path/to/new/OBJ/files/ -s 
 
 Now the values of the solar potential of roof surfaces in the CityGML file are stored as textures (colours), and such can be easily visualised:
 
-![solar3dcity-header](http://3dgeoinfo.bk.tudelft.nl/biljecki/github/solar3dcity/ov-solar-n-legend-logo-small.png)
+![solar3dcity-header](https://3d.bk.tudelft.nl/biljecki/github/solar3dcity/ov-solar-n-legend-logo-small.png)
 
 
 The different options are for transfering the values of attributes between different hierarchical levels. For instance, the option 3 takes the attribute assigned to the building, and colours only the triangles representing the RoofSurface, instead of all faces representing that building. If you want to discuss this in further details to accommodate your needs, do not hesitate to contact me.
 
-![Attributes](http://3dgeoinfo.bk.tudelft.nl/biljecki/github/citygml2objs/att-uml.png)
+![Attributes](https://3d.bk.tudelft.nl/biljecki/github/citygml2objs/att-uml.png)
 
 
 Performance
@@ -258,7 +259,7 @@ email: fbiljecki at gmail dot com
 
 Acknowledgments
 ---------------------
-+ This research is supported by the Dutch Technology Foundation STW, which is part of the Netherlands Organisation for Scientific Research (NWO), and which is partly funded by the Ministry of Economic Affairs. (Project code: 11300)
++ This research is supported by the Dutch Technology Foundation STW, which is part of the Netherlands Organisation for Scientific Research (NWO), and which is partly funded by the Ministry of Economic Affairs (project code: 11300).
 
 + [Triangle](http://www.cs.cmu.edu/~quake/triangle.html), a 2D quality mesh generator and delaunay triangulator developed by [Jonathan Shewchuk](http://www.cs.berkeley.edu/~jrs/), and the [Python bindings](http://dzhelil.info/triangle/). CityGML2OBJs relies on this tool for triangulating the polygons, and its availability is highly appreaciated.
 
@@ -266,9 +267,9 @@ Acknowledgments
 
 My colleagues:
  
-+ [Ken Arroyo Ohori](http://www.gdmc.nl/Ken/)
++ [Ken Arroyo Ohori](http://tudelft.nl/kenohori)
 
-+ [Ravi Peters](http://3dgeoinfo.bk.tudelft.nl/rypeters) who developed a similar software [citygml2obj](https://code.google.com/p/citygml2obj/) in 2009, and gave me the permission to use the name of his software.
++ [Ravi Peters](https://3d.bk.tudelft.nl/rypeters) who developed a similar software [citygml2obj](https://code.google.com/p/citygml2obj/) in 2009, and gave me the permission to use the name of his software.
 
 + [Hugo Ledoux](http://homepage.tudelft.nl/23t4p/)
 

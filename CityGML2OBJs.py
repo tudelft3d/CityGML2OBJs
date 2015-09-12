@@ -35,6 +35,7 @@ import os
 import argparse
 import glob
 import numpy as np
+import itertools
 
 #-- ARGUMENTS
 # -i -- input directory (it will read and convert ALL CityGML files in a directory)
@@ -75,6 +76,19 @@ def write_vertices(list_vertices, cla):
 	for each in list_vertices:
 		vertices_output[cla].append("v" + " " + str(each[0]) + " " + str(each[1]) + " " + str(each[2]) + "\n")
 
+
+def remove_reccuring(list_vertices):
+	"""Removes recurring vertices, which messes up the triangulation.
+	Inspired by http://stackoverflow.com/a/1143432"""
+	# last_point = list_vertices[-1]
+	list_vertices_without_last = list_vertices[:-1]
+	found = set()
+	for item in list_vertices_without_last:
+		if str(item) not in found:
+			yield item
+			found.add(str(item))
+
+
 def poly_to_obj(poly, cl, material=None):
 	"""Main conversion function of one polygon to one or more faces in OBJ,
 	in a specific semantic class. Supports assigning a material."""
@@ -85,14 +99,26 @@ def poly_to_obj(poly, cl, material=None):
 	e, i = markup3dmodule.polydecomposer(poly)
 	#-- Points forming the exterior LinearRing
 	epoints = markup3dmodule.GMLpoints(e[0])
+	#-- Clean recurring points, except the last one
+	last_ep = epoints[-1]
+	epoints_clean = list(remove_reccuring(epoints))
+	epoints_clean.append(last_ep)
+	# print epoints
+	# print epoints_clean
+	# print
 	#-- LinearRing(s) forming the interior
 	irings = []
 	for iring in i:
-		irings.append(markup3dmodule.GMLpoints(iring))
+		ipoints = markup3dmodule.GMLpoints(iring)
+		#-- Clean them in the same manner as the exterior ring
+		last_ip = ipoints[-1]
+		ipoints_clean = list(remove_reccuring(ipoints))
+		ipoints_clean.append(last_ip)		
+		irings.append(ipoints_clean)
 	#-- If the polygon validation option is enabled
 	if VALIDATION:
 		#-- Check the polygon
-		valid = polygon3dmodule.isPolyValid(epoints, False)
+		valid = polygon3dmodule.isPolyValid(epoints_clean, True)
 		if valid:
 			for iring in irings:
 				if not polygon3dmodule.isPolyValid(iring, False):
@@ -102,12 +128,12 @@ def poly_to_obj(poly, cl, material=None):
 			if SKIPTRI:
 				#-- Triangulation is skipped, polygons are converted directly to faces
 				#-- The last point is removed since it's equal to the first one
-				t = [epoints[:-1]]
+				t = [epoints_clean[:-1]]
 			else:
 				#-- Triangulate polys
 				# t = polygon3dmodule.triangulation(epoints, irings)
 				try:
-					t = polygon3dmodule.triangulation(epoints, irings)
+					t = polygon3dmodule.triangulation(epoints_clean, irings)
 				except:
 					t = []
 			#-- Process the triangles/polygons
@@ -136,9 +162,9 @@ def poly_to_obj(poly, cl, material=None):
 		#-- Do exactly the same, but without the validation
 		try:
 			if SKIPTRI:
-				t = [epoints[:-1]]
+				t = [epoints_clean[:-1]]
 			else:
-				t = polygon3dmodule.triangulation(epoints, irings)
+				t = polygon3dmodule.triangulation(epoints_clean, irings)
 		except:
 			t = []
 		for tri in t:
