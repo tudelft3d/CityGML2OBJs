@@ -16,7 +16,9 @@ A robust semantic-aware utility to convert CityGML data to OBJ, featuring some a
 Things to know
 ---------------------
 
-This is an experimental research software prototype. That said, support is limited, and the software is not without bugs. For instance, there are reports of crashes with large data sets and/or with invalid geometries.
+This is an experimental research software prototype. Therefore, support is limited, and the software is not without bugs. For instance, there are reports of crashes with large data sets and/or with invalid geometries.
+
+If you'd like to learn more about OBJ, I recommend to read the [Wikipedia entry](https://en.wikipedia.org/wiki/Wavefront_.obj_file) and/or the [specifications](http://www.martinreddy.net/gfx/3d/OBJ.spec).
 
 
 Publication and conditions for use
@@ -24,17 +26,19 @@ Publication and conditions for use
 
 This software is free to use. You are kindly asked to acknowledge its use by citing it in a research paper you are writing, reports, and/or other applicable materials. If you used it for making a nice publication, please cite the following paper:
 
-[Biljecki, F., & Arroyo Ohori, K. (2015). Automatic semantic-preserving conversion between OBJ and CityGML (pp. 1–6). Proceedings of UDMV 2015: Workshop on Urban Data Modelling and Visualisation, Delft, Netherlands.](http://filipbiljecki.com/publications/Biljecki2015vk.pdf)
+Biljecki, F., & Arroyo Ohori, K. (2015). Automatic semantic-preserving conversion between OBJ and CityGML. Eurographics Workshop on Urban Data Modelling and Visualisation 2015, pp. 25-30.
+[PDF](http://filipbiljecki.com/publications/Biljecki2015vk.pdf) [DOI](http://doi.org/10.2312/udmv.20151345)
 
 
 ```bib
 @inproceedings{Biljecki:2015vk,
 author = {Biljecki, Filip and Arroyo Ohori, Ken},
-title = {{Automatic semantic-preserving conversion between OBJ and CityGML}},
-booktitle = {UDMV 2015: Proceedings of the Workshop on Urban Data Modelling and Visualisation},
+title = {{Automatic Semantic-preserving Conversion Between OBJ and CityGML}},
+booktitle = {Eurographics Workshop on Urban Data Modelling and Visualisation 2015},
 year = {2015},
-pages = {1--6},
+pages = {25--30},
 address = {Delft, Netherlands},
+doi = {10.2312/udmv.20151345},
 month = nov
 }
 ```
