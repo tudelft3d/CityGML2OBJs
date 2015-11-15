@@ -27,7 +27,8 @@ Publication and conditions for use
 This software is free to use. You are kindly asked to acknowledge its use by citing it in a research paper you are writing, reports, and/or other applicable materials. If you used it for making a nice publication, please cite the following paper:
 
 Biljecki, F., & Arroyo Ohori, K. (2015). Automatic semantic-preserving conversion between OBJ and CityGML. Eurographics Workshop on Urban Data Modelling and Visualisation 2015, pp. 25-30.
-[PDF](http://filipbiljecki.com/publications/Biljecki2015vk.pdf) [DOI](http://doi.org/10.2312/udmv.20151345)
+
+[[PDF]](http://filipbiljecki.com/publications/Biljecki2015vk.pdf) [[DOI]](http://doi.org/10.2312/udmv.20151345)
 
 
 ```bib
