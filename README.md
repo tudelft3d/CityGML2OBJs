@@ -113,7 +113,7 @@ To simply convert CityGML data into OBJ type the following command:
 python CityGML2OBJs.py -i /path/to/CityGML/files/ -o /path/to/new/OBJ/files/
 ```
 
-The tool will convert all CityGML files it finds in that folder. Don't forget to close the command with `/`
+The tool will convert all CityGML files it finds in that folder. The command works also with relative paths.
 
 ### Semantics
 

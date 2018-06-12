@@ -195,8 +195,8 @@ PARSER.add_argument('-t', '--translate',
 PARSER.add_argument('-p', '--polypreserve',
 	help='Skip the triangulation (preserve polygons). Triangulation is default.', required=False)
 ARGS = vars(PARSER.parse_args())
-DIRECTORY = ARGS['directory']
-RESULT = ARGS['results']
+DIRECTORY = os.path.join(ARGS['directory'], '')
+RESULT = os.path.join(ARGS['results'], '')
 
 SEMANTICS = ARGS['semantics']
 if SEMANTICS == '1':
@@ -298,7 +298,7 @@ for files in types:
 	files_found.extend(glob.glob(files))
 for f in files_found:
 	FILENAME = f[:f.rfind('.')]
-	FULLPATH = DIRECTORY + f
+	FULLPATH = os.path.join(DIRECTORY, f)
 
 	#-- Reading and parsing the CityGML file(s)
 	CITYGML = etree.parse(FULLPATH)
