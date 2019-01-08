@@ -1,7 +1,7 @@
 CityGML2OBJs
 ===========
 
-![CityGML2OBJs-header-image](https://3d.bk.tudelft.nl/biljecki/github/citygml2objs/whitesky-small.png)
+![CityGML2OBJs-header-image](http://filipbiljecki.com/code/img/whitesky-small.png)
 
 A robust semantic-aware utility to convert CityGML data to OBJ, featuring some additional options reflected through the suffix "s" in the name of the package:
 
@@ -127,7 +127,7 @@ the tool will create an OBJ file for each of the boundary surfaces it encounters
 
 Here is an example of the OBJ file representing the `WallSurface`:
 
-![Triangulated WallSurface](https://3d.bk.tudelft.nl/biljecki/github/citygml2objs/sem-tri-small.png)
+![Triangulated WallSurface](http://filipbiljecki.com/code/img/sem-tri-small.png)
 
 Regardless of the semantic option, the program always outputs the plain OBJ. This is a useful approach if you load data which does not have boundary surfaces (e.g. only a bunch of solids) so you'll always get something back. The tool detects if there are no thematic boundaries, so doesn't write empty OBJ files, for instance, an empty `*-Window.obj` for an LOD2 model.
 
@@ -226,7 +226,7 @@ Now the values of the solar potential of roof surfaces in the CityGML file are s
 
 The different options are for transfering the values of attributes between different hierarchical levels. For instance, the option 3 takes the attribute assigned to the building, and colours only the triangles representing the RoofSurface, instead of all faces representing that building. If you want to discuss this in further details to accommodate your needs, do not hesitate to contact me.
 
-![Attributes](https://3d.bk.tudelft.nl/biljecki/github/citygml2objs/att-uml.png)
+![Attributes](http://filipbiljecki.com/code/img/att-uml.png)
 
 
 Performance
