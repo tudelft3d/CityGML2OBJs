@@ -3,7 +3,7 @@
 
 This project will not be further developed and bugs won't be fixed.
 
-Instead, we advice you to use CityJSON (and convert your files with [citygml-tools](https://github.com/citygml4j/citygml-tools)) and then use [cjio](https://github.com/tudelft3d/cjio) `export` operator to get an OBJ file.
+Instead, we advice you to use [CityJSON](https://cityjson.org) (and convert your files with [citygml-tools](https://github.com/citygml4j/citygml-tools)) and then use [cjio](https://github.com/tudelft3d/cjio) `export` operator to get an OBJ file.
 
 - - -
 
